@@ -1,0 +1,49 @@
+commons:
+  visibility-on: "&aShow players"
+  visibility-off: "&cHide players"
+  visibility-only-rank: "&dOnly rank's"
+  visibility-no-permission: "&cNo permission"
+
+  chat-on: "&aEnable"
+  chat-off: "&cDisable"
+  chat-no-permission: "&cNo permission"
+
+  double-jump-on: "&aEnable"
+  double-jump-off: "&cDisable"
+  double-jump-no-permission: "&cNo permission"
+
+  mount-on: "&aEnable"
+  mount-off: "&cDisable"
+  mount-no-permission: "&cNo permission"
+
+  fly-on: "&aEnable"
+  fly-off: "&cDisable"
+  fly-no-permission: "&cNo permission"
+
+showoptions:
+  error: "&cAn error has occurred because you are not in a valid world to use this command."
+
+visibility:
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+chat:
+  error: "&cA problem has occurred to send a message, activate the chat to be able to receive and send messages."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+double-jump:
+  sound: "ENTITY_MAGMA_CUBE_SQUISH"
+  not-change: "&cYou cannot change the status of the double jump option because the fly option is active"
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+mount:
+  has-no-rank: "&cYou do not have a &e&lVIP &crank or higher to be able to ride a player."
+  target-disable: "&cPlayer &e%target_name% &cdoes not want to be ridden by normal players."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+fly:
+  not-change: "&cYou cannot change the status of the fly option because the double jump option is active."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+message-join:
+  successful: "&aPlayer &e%player_name% &ahas entered the server."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."

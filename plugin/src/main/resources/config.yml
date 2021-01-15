@@ -1,0 +1,44 @@
+data:
+  # Types:
+  #     SQLite: Local File (Default)
+  #     MySQL: MySQL Server required
+  type: SQLite
+
+  mysql:
+    # MySQL server address/ip
+    address: localhost
+    # database name
+    database: minecraft
+    # MySQL user
+    username: root
+    # MySQL password
+    password: 'passwordXd'
+    # MySQL port
+    port: 3306
+    # MySQL Pool settings (Recommended to leave as is if you do not know.)
+    pool-settings:
+      maximum-pool-size: 10
+      minimum-idle: 10
+      connection-timeout: 5000 # 5 seconds
+
+world:
+  # Types:
+  #   * black_list - The worlds that you put in this list will be deactivated so that the complement
+  #                 does not work and the rest of the worlds the complement will work.
+  #
+  #   * white_list - The worlds that you put in this list are activated so that the plugin works and
+  #                 the rest of the worlds the plugin will not work.
+  type: white_list
+  worlds:
+    - "lobby"
+    - "Lobby"
+    - "world"
+
+# If you have this option activated, when a user enters with the fly option activated, it will launch him upwards
+# towards a certain distance.
+visibility-throws:
+  enabled: true
+  distance:
+    x: 0
+    y: 1
+    z: 0

@@ -1,0 +1,261 @@
+main-menu:
+  title: "&8Player Options"
+  rows: 5
+
+  items:
+    visibility:
+      name: "&bVisibility &7: %user_visibility%"
+      material: "ENDER_EYE"
+      amount: 1
+      lore:
+        - ""
+        - "&rChoose who you want to see in the lobbies."
+        - ""
+        - "&aClick to change."
+      slot: 10
+
+      toggle:
+        state-on:
+          name: "&bVisibility &7: %user_visibility%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose who you want to see in the lobbies."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bVisibility &7: %user_visibility%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose who you want to see in the lobbies."
+            - ""
+            - "&aClick to change."
+        state-only-rank:
+          name: "&bVisibility &7: %user_visibility%"
+          material: "PINK_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose who you want to see in the lobbies."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bVisibility &7: %user_visibility%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose who you want to see in the lobbies."
+            - ""
+            - "&6No permissions."
+
+    chat:
+      name: "&bChat &7: %user_chat%"
+      material: "FILLED_MAP"
+      amount: 1
+      lore:
+        - ""
+        - "&rChoose if you want to receive messages in the chat."
+        - ""
+        - "&aClick to change."
+      slot: 11
+
+      toggle:
+        state-on:
+          name: "&bChat &7: %user_chat%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose if you want to receive messages in the chat."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bChat &7: %user_chat%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose if you want to receive messages in the chat."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bChat &7: %user_chat%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rChoose if you want to receive messages in the chat."
+            - ""
+            - "&6No permissions."
+
+    double-jump:
+      name: "&bDouble Jump &7: %user_double_jump%"
+      material: "SLIME_BLOCK"
+      amount: 1
+      lore:
+        - ""
+        - "&rDo a double jump with Mario."
+        - ""
+        - "&aClick to change."
+      slot: 12
+
+      toggle:
+        state-on:
+          name: "&bDouble Jump &7: %user_double_jump%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo a double jump with Mario."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bDouble Jump &7: %user_double_jump%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo a double jump with Mario."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bDouble Jump &7: %user_double_jump%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo a double jump with Mario."
+            - ""
+            - "&6No permissions."
+
+    mount:
+      name: "&bAllow mount &7: %user_mount%"
+      material: "SADDLE"
+      amount: 1
+      lore:
+        - ""
+        - "&rDo you want to allow VIPS to"
+        - "&rride on top of them?"
+        - ""
+        - "&aClick to change."
+      slot: 13
+
+      toggle:
+        state-on:
+          name: "&bAllow mount &7: %user_mount%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo you want to allow VIPS to"
+            - "&rride on top of them?"
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bAllow mount &7: %user_mount%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo you want to allow VIPS to"
+            - "&rride on top of them?"
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bAllow mount &7: %user_mount%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rDo you want to allow VIPS to"
+            - "&rride on top of them?"
+            - ""
+            - "&6No permissions."
+
+    fly:
+      name: "&bFly &7: %user_fly%"
+      material: "FEATHER"
+      amount: 1
+      lore:
+        - ""
+        - "&rFly for the lobbies!"
+        - ""
+        - "&aClick to change."
+      slot: 14
+
+      toggle:
+        state-on:
+          name: "&bFly &7: %user_fly%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rFly for the lobbies!"
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bFly &7: %user_fly%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rFly for the lobbies!"
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bFly &7: %user_fly%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rFly for the lobbies!"
+            - ""
+            - "&6No permissions."
+
+    message-join:
+      name: "&bMessage when entering &7: %user_messagejoin%"
+      material: "FEATHER"
+      amount: 1
+      lore:
+        - ""
+        - "&rEvery time you enter a lobby, it will appear"
+        - "&ra message to all players."
+        - ""
+        - "&aClick to change."
+      slot: 15
+
+      toggle:
+        state-on:
+          name: "&bMessage when entering &7: %user_messagejoin%"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rEvery time you enter a lobby, it will appear"
+            - "&ra message to all players."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bMessage when entering &7: %user_messagejoin%"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rEvery time you enter a lobby, it will appear"
+            - "&ra message to all players."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bMessage when entering &7: %user_messagejoin%"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rEvery time you enter a lobby, it will appear"
+            - "&ra message to all players."
+            - ""
+            - "&6No permissions."

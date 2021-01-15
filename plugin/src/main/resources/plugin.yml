@@ -1,0 +1,5 @@
+name: ElegantOptions
+main: io.github.srvenient.elegantoptions.plugin.ElegantOptions
+version: ${project.version}
+author: SrVenient
+softdepend: [PlaceholderAPI]
