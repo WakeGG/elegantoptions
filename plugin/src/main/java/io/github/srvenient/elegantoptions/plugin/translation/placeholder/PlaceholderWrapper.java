@@ -76,7 +76,7 @@ public class PlaceholderWrapper extends PlaceholderExpansion {
                 }
 
                 return "";
-            case "double_jump":
+            case "doublejump":
                 switch (user.getDoubleJump()) {
                     case ON:
                         return colorize(player, language.getString("commons.double-jump-on"));
@@ -109,6 +109,28 @@ public class PlaceholderWrapper extends PlaceholderExpansion {
                 }
 
                 return "";
+            case "messagejoin":
+                switch (user.getMessageJoin()) {
+                    case ON:
+                        return colorize(player, language.getString("commons.message-join-on"));
+                    case OFF:
+                        return colorize(player, language.getString("commons.message-join-off"));
+                    case NO_PERMISSION:
+                        return colorize(player, language.getString("commons.message-join-no-permission"));
+                }
+
+                return "";
+            case "effectjoin":
+                switch (user.getEffectJoin()) {
+                    case NOTHING:
+                        return colorize(player, language.getString("commons.effect-join-nothing"));
+                    case FIREWORK:
+                        return colorize(player, language.getString("commons.effect-join-firework"));
+                    case ZEUS:
+                        return colorize(player, language.getString("commons.effect-join-zeus"));
+                    case SHEEP:
+                        return colorize(player, language.getString("commons.effect-join-sheeps"));
+                }
             default:
                 return "";
         }

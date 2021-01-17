@@ -15,7 +15,7 @@
         <module>api</module>
     </modules>
 
-    <name>ElegantOptions</name>
+    <name>elegantoptions-parent</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

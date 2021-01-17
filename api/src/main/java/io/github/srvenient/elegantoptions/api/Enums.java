@@ -9,8 +9,10 @@ public enum Enums {;
         NO_PERMISSION,
     }
 
-    public enum TypeDatabase {
-        MySQL,
-        SQLite,
+    public enum Effects {
+        NOTHING,
+        FIREWORK,
+        ZEUS,
+        SHEEP,
     }
 }

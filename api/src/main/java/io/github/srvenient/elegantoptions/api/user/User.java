@@ -16,6 +16,7 @@ public class User extends StorableModel {
     private Enums.TypeStatus mount;
     private Enums.TypeStatus fly;
     private Enums.TypeStatus messageJoin;
+    private Enums.Effects effectJoin;
 
 
     public User(Player player) {
@@ -27,6 +28,7 @@ public class User extends StorableModel {
         this.mount = Enums.TypeStatus.ON;
         this.fly = Enums.TypeStatus.OFF;
         this.messageJoin = Enums.TypeStatus.OFF;
+        this.effectJoin = Enums.Effects.NOTHING;
     }
 
     @Override
@@ -80,5 +82,13 @@ public class User extends StorableModel {
 
     public void setMessageJoin(Enums.TypeStatus messageJoin) {
         this.messageJoin = messageJoin;
+    }
+
+    public Enums.Effects getEffectJoin() {
+        return effectJoin;
+    }
+
+    public void setEffectJoin(Enums.Effects effectJoin) {
+        this.effectJoin = effectJoin;
     }
 }

@@ -16,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class DatabaseService implements Service {
@@ -28,32 +29,23 @@ public class DatabaseService implements Service {
     public void start() {
         Database database;
 
-        if (config.getString("data.type").equals(Enums.TypeDatabase.MySQL.name())) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
             database = new MySQLDatabase();
-
-            database.init(plugin, config);
-            database.create("CREATE TABLE IF NOT EXISTS `DemeterOption` (`id` VARCHAR(36), `dropped` VARCHAR(36), `visibility` VARCHAR(16), `chat` VARCHAR(16))");
-
             FreyaAPI.setMySQLdb(database);
-        } else if (config.getString("data.type").equals(Enums.TypeDatabase.SQLite.name())) {
-            database = new SQLiteDatabase();
-
-            database.init(plugin, config);
-            database.create("CREATE TABLE IF NOT EXISTS `DemeterOption` (`id` VARCHAR(36), `dropped` VARCHAR(36), `visibility` VARCHAR(16), `chat` VARCHAR(16))");
-
-            FreyaAPI.setSqLitedb(database);
         } else {
-            Bukkit.getPluginManager().disablePlugin(plugin);
-
-            Bukkit.getLogger().log(Level.SEVERE, "An error occurred connecting to the database.");
+            database = new SQLiteDatabase();
+            FreyaAPI.setSqLitedb(database);
         }
+
+        database.init(plugin, config);
+        database.create("CREATE TABLE IF NOT EXISTS `ElegantOptions` (`id` VARCHAR(36), `dropped` BOOLEAN, `visibility` VARCHAR(16), `chat` VARCHAR(16), `doubleJump` VARCHAR(16), `mount` VARCHAR(16), `fly` VARCHAR(16), `messageJoin` VARCHAR(16), `effectJoin` VARCHAR(16))");
     }
 
     @Override
     public void stop() {
-        if (config.getString("data.type").equals(Enums.TypeDatabase.MySQL.name())) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
             FreyaAPI.getMySQLdb().close();
-        } else if (config.getString("data.type").equals(Enums.TypeDatabase.SQLite.name())) {
+        } else {
             FreyaAPI.getSQLitedb().close();
         }
     }

@@ -93,7 +93,7 @@ main-menu:
             - "&6No permissions."
 
     double-jump:
-      name: "&bDouble Jump &7: %user_double_jump%"
+      name: "&bDouble Jump &7: %user_doublejump%"
       material: "SLIME_BLOCK"
       amount: 1
       lore:
@@ -105,7 +105,7 @@ main-menu:
 
       toggle:
         state-on:
-          name: "&bDouble Jump &7: %user_double_jump%"
+          name: "&bDouble Jump &7: %user_doublejump%"
           material: "LIME_STAINED_GLASS_PANE"
           amount: 1
           lore:
@@ -114,7 +114,7 @@ main-menu:
             - ""
             - "&aClick to change."
         state-off:
-          name: "&bDouble Jump &7: %user_double_jump%"
+          name: "&bDouble Jump &7: %user_doublejump%"
           material: "RED_STAINED_GLASS_PANE"
           amount: 1
           lore:
@@ -123,7 +123,7 @@ main-menu:
             - ""
             - "&aClick to change."
         state-no-permission:
-          name: "&bDouble Jump &7: %user_double_jump%"
+          name: "&bDouble Jump &7: %user_doublejump%"
           material: "ORANGE_STAINED_GLASS_PANE"
           amount: 1
           lore:
@@ -259,3 +259,27 @@ main-menu:
             - "&ra message to all players."
             - ""
             - "&6No permissions."
+
+    effect-join:
+      name: "&bEffect when entering &7: %user_effectjoin%"
+      material: "FIREWORK_ROCKET"
+      amount: 1
+      lore:
+        - ""
+        - "&rWhen entering a lobby, an effect is thrown when"
+        - "&rentering that you have selected."
+        - ""
+        - "&aClick to open menu."
+      slot: 16
+
+      toggle:
+        state:
+          name: "&bEffect when entering &7: %user_effectjoin%"
+          material: "GRAY_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen entering a lobby, an effect is thrown when"
+            - "&rentering that you have selected."
+            - ""
+            - "&aClick to open menu."

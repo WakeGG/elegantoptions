@@ -2,6 +2,7 @@ package io.github.srvenient.elegantoptions.plugin.loader;
 
 import dev.srvenient.freya.abstraction.loader.Loader;
 
+import io.github.srvenient.elegantoptions.plugin.listener.PlayerEffectJoinListener;
 import io.github.srvenient.elegantoptions.plugin.listener.vanilla.*;
 
 import org.bukkit.Bukkit;
@@ -19,18 +20,23 @@ public class EventLoader implements Loader {
 
     @Inject private PlayerJoinListener playerJoinListener;
     @Inject private PlayerMoveListener playerMoveListener;
-    @Inject private PlayerToggleFlightListener playerToggleFlightListener;
-    @Inject private PlayerInteractAtEntityListener playerInteractAtEntityListener;
     @Inject private AsyncPlayerChatListener asyncPlayerChatListener;
+    @Inject private PlayerToggleFlightListener playerToggleFlightListener;
+    @Inject private PlayerChangedWorldListener playerChangedWorldListener;
+    @Inject private PlayerInteractAtEntityListener playerInteractAtEntityListener;
+
+    @Inject private PlayerEffectJoinListener playerEffectJoinListener;
 
     @Override
     public void load() {
         register(
                 playerJoinListener,
                 playerMoveListener,
-                playerToggleFlightListener,
-                playerInteractAtEntityListener,
                 asyncPlayerChatListener,
+                playerToggleFlightListener,
+                playerChangedWorldListener,
+                playerInteractAtEntityListener,
+                playerEffectJoinListener,
                 new GUIListeners()
         );
     }

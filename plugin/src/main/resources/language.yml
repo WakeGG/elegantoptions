@@ -20,6 +20,16 @@ commons:
   fly-off: "&cDisable"
   fly-no-permission: "&cNo permission"
 
+  message-join-on: "&aEnable"
+  message-join-off: "&cDisable"
+  message-join-no-permission: "&cNo permission"
+
+  effect-join-nothing: "&7Ninguno"
+  effect-join-firework: "&aFirework"
+  effect-join-zeus: "&bZeus"
+  effect-join-sheeps: "&dSheep's"
+  effect-join-no-permission: "&cNo permission"
+
 showoptions:
   error: "&cAn error has occurred because you are not in a valid world to use this command."
 
@@ -45,5 +55,9 @@ fly:
   no-permission: "&cA problem has occurred because you do not have permission to use this."
 
 message-join:
+  successful: "&aPlayer &e%player_name% &ahas entered the server."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+effect-join:
   successful: "&aPlayer &e%player_name% &ahas entered the server."
   no-permission: "&cA problem has occurred because you do not have permission to use this."
