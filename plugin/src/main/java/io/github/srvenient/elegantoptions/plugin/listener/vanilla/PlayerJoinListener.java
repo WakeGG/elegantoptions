@@ -28,6 +28,7 @@ import javax.inject.Named;
 
 import java.sql.ResultSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -37,7 +38,6 @@ public class PlayerJoinListener implements Listener {
 
     @Inject private Plugin plugin;
 
-    @Inject private UserMatcher userMatcher;
     @Inject private ObjectCache<User> userCache;
 
     @Inject private DatabaseHandler databaseHandler;
@@ -45,7 +45,7 @@ public class PlayerJoinListener implements Listener {
     @Inject @Named("config") private Configuration config;
     @Inject @Named("language") private Configuration language;
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
@@ -60,70 +60,44 @@ public class PlayerJoinListener implements Listener {
                         if (user == null) {
                             User newUser = new User(player);
 
+                            newUser.setDropped(false);
+
                             if (databaseHandler.existPlayer(player)) {
-                                ResultSet resultSet;
-
-                                if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                                    resultSet = FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
-                                } else {
-                                    resultSet = FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
+                                try (ResultSet resultSet = databaseHandler.getUser(uuid)) {
+                                    newUser.setVisibility(Enums.TypeStatus.valueOf(resultSet.getString("visibility")));
+                                    newUser.setChat(Enums.TypeStatus.valueOf(resultSet.getString("chat")));
+                                    newUser.setDoubleJump(Enums.TypeStatus.valueOf(resultSet.getString("doubleJump")));
+                                    newUser.setMount(Enums.TypeStatus.valueOf(resultSet.getString("mount")));
+                                    newUser.setFly(Enums.TypeStatus.valueOf(resultSet.getString("fly")));
+                                    newUser.setMessageJoin(Enums.TypeStatus.valueOf(resultSet.getString("messageJoin")));
+                                    newUser.setEffectJoin(Enums.Effects.valueOf(resultSet.getString("effectJoin")));
                                 }
-
-                                newUser.setDropped(false);
-
-                                newUser.setVisibility(Enums.TypeStatus.valueOf(resultSet.getString("visibility")));
-                                newUser.setChat(Enums.TypeStatus.valueOf(resultSet.getString("chat")));
-                                newUser.setDoubleJump(Enums.TypeStatus.valueOf(resultSet.getString("doubleJump")));
-                                newUser.setMount(Enums.TypeStatus.valueOf(resultSet.getString("mount")));
-                                newUser.setFly(Enums.TypeStatus.valueOf(resultSet.getString("fly")));
-                                newUser.setMessageJoin(Enums.TypeStatus.valueOf(resultSet.getString("messageJoin")));
-                                newUser.setEffectJoin(Enums.Effects.valueOf(resultSet.getString("effectJoin")));
 
                                 databaseHandler.setDroppedAsync(player, false);
-                            } else {
-                                newUser.setDropped(false);
 
-                                if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                                    FreyaAPI.getMySQLdb().query("INSERT INTO `ElegantOptions` (`visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?, `uuid` = ?)", newUser.getVisibility().name(), newUser.getChat().name(), newUser.getDoubleJump().name(), newUser.getMount().name(), newUser.getFly().name(), newUser.getMessageJoin().name(), newUser.getEffectJoin().name(), newUser.isDropped(), uuid.toString());
-                                } else {
-                                    FreyaAPI.getSQLitedb().query("INSERT INTO `ElegantOptions` (`visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?, `uuid` = ?)", newUser.getVisibility().name(), newUser.getChat().name(), newUser.getDoubleJump().name(), newUser.getMount().name(), newUser.getFly().name(), newUser.getMessageJoin().name(), newUser.getEffectJoin().name(), newUser.isDropped(), uuid.toString());
-                                }
-                            }
+                            } else databaseHandler.createPlayer(newUser);
 
                             userCache.update(newUser);
 
                             return;
                         }
 
+                        user.setDropped(false);
+
                         if (databaseHandler.existPlayer(player)) {
-                            ResultSet resultSet;
-
-                            if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                                resultSet = FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
-                            } else {
-                                resultSet = FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
+                            try (ResultSet resultSet = databaseHandler.getUser(uuid)) {
+                                user.setVisibility(Enums.TypeStatus.valueOf(resultSet.getString("visibility")));
+                                user.setChat(Enums.TypeStatus.valueOf(resultSet.getString("chat")));
+                                user.setDoubleJump(Enums.TypeStatus.valueOf(resultSet.getString("doubleJump")));
+                                user.setMount(Enums.TypeStatus.valueOf(resultSet.getString("mount")));
+                                user.setFly(Enums.TypeStatus.valueOf(resultSet.getString("fly")));
+                                user.setMessageJoin(Enums.TypeStatus.valueOf(resultSet.getString("messageJoin")));
+                                user.setEffectJoin(Enums.Effects.valueOf(resultSet.getString("effectJoin")));
                             }
-
-                            user.setDropped(false);
-
-                            user.setVisibility(Enums.TypeStatus.valueOf(resultSet.getString("visibility")));
-                            user.setChat(Enums.TypeStatus.valueOf(resultSet.getString("chat")));
-                            user.setDoubleJump(Enums.TypeStatus.valueOf(resultSet.getString("doubleJump")));
-                            user.setMount(Enums.TypeStatus.valueOf(resultSet.getString("mount")));
-                            user.setFly(Enums.TypeStatus.valueOf(resultSet.getString("fly")));
-                            user.setMessageJoin(Enums.TypeStatus.valueOf(resultSet.getString("messageJoin")));
-                            user.setEffectJoin(Enums.Effects.valueOf(resultSet.getString("effectJoin")));
 
                             databaseHandler.setDroppedAsync(player, false);
-                        } else {
-                            user.setDropped(false);
 
-                            if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                                FreyaAPI.getMySQLdb().query("INSERT INTO `ElegantOptions` (`visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?, `uuid` = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
-                            } else {
-                                FreyaAPI.getSQLitedb().query("INSERT INTO `ElegantOptions` (`visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?, `uuid` = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
-                            }
-                        }
+                        } else databaseHandler.createPlayer(user);
 
                         userCache.update(user);
                     }
@@ -151,7 +125,11 @@ public class PlayerJoinListener implements Listener {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
-        User user = userMatcher.getUserId(uuid);
+        Optional<User> userOptional = userCache.getIfPresent(uuid.toString());
+
+        if (!userOptional.isPresent()) return;
+
+        User user = userOptional.get();
 
         if (Utils.playerValidWorld(player, config)) {
             switch (user.getVisibility()) {
@@ -177,7 +155,11 @@ public class PlayerJoinListener implements Listener {
             }
 
             for (Player players : Bukkit.getOnlinePlayers()) {
-                User users = userMatcher.getUserId(players.getUniqueId());
+                Optional<User> usersOptional = userCache.getIfPresent(players.getUniqueId().toString());
+
+                if (!usersOptional.isPresent()) return;
+
+                User users = usersOptional.get();
 
                 switch (users.getVisibility()) {
                     case ON:

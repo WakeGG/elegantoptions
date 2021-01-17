@@ -36,12 +36,30 @@ public class SimpleDatabaseHandler implements DatabaseHandler {
         ResultSet resultSet;
 
         if (Objects.equals(config.getString("data.type"), "MySQL")) {
-            resultSet = FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
+            resultSet = FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
         } else {
-            resultSet = FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (`id` VARCHAR(36))", uuid.toString());
+            resultSet = FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
         }
 
         return resultSet.next();
+    }
+
+    @Override
+    public void createPlayer(User user) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
+            FreyaAPI.getMySQLdb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, uuid = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
+        } else {
+            FreyaAPI.getSQLitedb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, uuid = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
+        }
+    }
+
+    @Override
+    public ResultSet getUser(UUID uuid) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
+            return FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
+        } else {
+            return FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
+        }
     }
 
     @Override
