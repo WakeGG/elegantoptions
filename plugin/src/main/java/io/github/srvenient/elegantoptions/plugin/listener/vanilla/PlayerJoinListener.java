@@ -75,7 +75,12 @@ public class PlayerJoinListener implements Listener {
 
                                 databaseHandler.setDroppedAsync(player, false);
 
-                            } else databaseHandler.createPlayer(newUser);
+                                userCache.update(newUser);
+
+                                return;
+                            }
+
+                            databaseHandler.createPlayer(newUser);
 
                             userCache.update(newUser);
 
@@ -97,7 +102,12 @@ public class PlayerJoinListener implements Listener {
 
                             databaseHandler.setDroppedAsync(player, false);
 
-                        } else databaseHandler.createPlayer(user);
+                            userCache.update(user);
+
+                            return;
+                        }
+
+                        databaseHandler.createPlayer(user);
 
                         userCache.update(user);
                     }

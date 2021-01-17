@@ -11,12 +11,12 @@ public interface DatabaseHandler {
 
     boolean existPlayer(Player player) throws SQLException;
 
-    void createPlayer(User user);
-
-    ResultSet getUser(UUID uuid);
-
     void setDroppedAsync(Player player, boolean dropped) throws SQLException;
 
     void updatePlayerAsync(Player player) throws SQLException;
+
+    void createPlayer(User user);
+
+    ResultSet getUser(UUID uuid);
 
 }

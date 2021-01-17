@@ -45,24 +45,6 @@ public class SimpleDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public void createPlayer(User user) {
-        if (Objects.equals(config.getString("data.type"), "MySQL")) {
-            FreyaAPI.getMySQLdb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, uuid = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
-        } else {
-            FreyaAPI.getSQLitedb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, uuid = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
-        }
-    }
-
-    @Override
-    public ResultSet getUser(UUID uuid) {
-        if (Objects.equals(config.getString("data.type"), "MySQL")) {
-            return FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
-        } else {
-            return FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
-        }
-    }
-
-    @Override
     public void setDroppedAsync(Player player, boolean dropped) throws SQLException {
         if (!existPlayer(player)) return;
 
@@ -70,9 +52,9 @@ public class SimpleDatabaseHandler implements DatabaseHandler {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                FreyaAPI.getMySQLdb().update("UPDATE ElegantOptions SET `dropped` = ?  WHERE uuid = ?;", dropped, uuid.toString());
+                FreyaAPI.getMySQLdb().update("UPDATE ElegantOptions SET `dropped` = ?  WHERE id = ?;", dropped, uuid.toString());
             } else {
-                FreyaAPI.getSQLitedb().update("UPDATE ElegantOptions SET `dropped` = ? WHERE uuid = ?;", dropped, uuid.toString());
+                FreyaAPI.getSQLitedb().update("UPDATE ElegantOptions SET `dropped` = ? WHERE id = ?;", dropped, uuid.toString());
             }
         });
     }
@@ -89,10 +71,28 @@ public class SimpleDatabaseHandler implements DatabaseHandler {
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (Objects.equals(config.getString("data.type"), "MySQL")) {
-                FreyaAPI.getMySQLdb().update("UPDATE ElegantOptions SET `visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?  WHERE uuid = ?;", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
+                FreyaAPI.getMySQLdb().update("UPDATE ElegantOptions SET `visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ?  WHERE id = ?;", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
             } else {
-                FreyaAPI.getSQLitedb().update("UPDATE ElegantOptions SET `visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ? WHERE uuid = ?;", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
+                FreyaAPI.getSQLitedb().update("UPDATE ElegantOptions SET `visibility` = ?, `chat` = ?, `doubleJump` = ?, `mount` = ?, `fly` = ?, `messageJoin` = ?, `effectJoin` = ?, `dropped` = ? WHERE id = ?;", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), uuid.toString());
             }
         });
+    }
+
+    @Override
+    public void createPlayer(User user) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
+            FreyaAPI.getMySQLdb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, id = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
+        } else {
+            FreyaAPI.getSQLitedb().query("INSERT INTO `ElegantOptions` (visibility = ?, chat = ?, doubleJump = ?, mount = ?, fly = ?, messageJoin = ?, effectJoin = ?, dropped = ?, id = ?)", user.getVisibility().name(), user.getChat().name(), user.getDoubleJump().name(), user.getMount().name(), user.getFly().name(), user.getMessageJoin().name(), user.getEffectJoin().name(), user.isDropped(), user.getId());
+        }
+    }
+
+    @Override
+    public ResultSet getUser(UUID uuid) {
+        if (Objects.equals(config.getString("data.type"), "MySQL")) {
+            return FreyaAPI.getMySQLdb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
+        } else {
+            return FreyaAPI.getSQLitedb().query("SELECT * FROM `ElegantOptions` WHERE (id = ?)", uuid.toString());
+        }
     }
 }
