@@ -3,6 +3,9 @@ package io.github.srvenient.elegantoptions.plugin.loader;
 import dev.srvenient.freya.abstraction.loader.Loader;
 
 import io.github.srvenient.elegantoptions.plugin.listener.PlayerEffectJoinListener;
+import io.github.srvenient.elegantoptions.plugin.listener.PlayerFlyJoinListener;
+import io.github.srvenient.elegantoptions.plugin.listener.PlayerMessageJoinListener;
+import io.github.srvenient.elegantoptions.plugin.listener.PlayerVisibilityJoinListener;
 import io.github.srvenient.elegantoptions.plugin.listener.vanilla.*;
 
 import org.bukkit.Bukkit;
@@ -25,6 +28,9 @@ public class EventLoader implements Loader {
     @Inject private PlayerChangedWorldListener playerChangedWorldListener;
     @Inject private PlayerInteractAtEntityListener playerInteractAtEntityListener;
 
+    @Inject private PlayerVisibilityJoinListener playerVisibilityJoinListener;
+    @Inject private PlayerFlyJoinListener playerFlyJoinListener;
+    @Inject private PlayerMessageJoinListener playerMessageJoinListener;
     @Inject private PlayerEffectJoinListener playerEffectJoinListener;
 
     @Override
@@ -36,6 +42,9 @@ public class EventLoader implements Loader {
                 playerToggleFlightListener,
                 playerChangedWorldListener,
                 playerInteractAtEntityListener,
+                playerVisibilityJoinListener,
+                playerFlyJoinListener,
+                playerMessageJoinListener,
                 playerEffectJoinListener,
                 new GUIListeners()
         );
