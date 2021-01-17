@@ -283,3 +283,148 @@ main-menu:
             - "&rentering that you have selected."
             - ""
             - "&aClick to open menu."
+
+effect-menu:
+  title: "&8Effects Join"
+  rows: 5
+
+  items:
+    nothing:
+      name: "&bRemove effects"
+      material: "BARRIER"
+      amount: 1
+      lore:
+        - ""
+        - "&rRemove the effects or the effect that you have"
+        - "&rselected at this moment."
+        - ""
+        - "&aClick to change."
+      slot: 41
+
+    firework:
+      name: "&bFirework"
+      material: "FIREWORK_ROCKET"
+      amount: 1
+      lore:
+        - ""
+        - "&rWhen you enter this effect, it will launch a firework."
+        - ""
+        - "&aClick to change."
+      slot: 12
+
+      toggle:
+        state-on:
+          name: "&bFirework &7: &a&lSelect"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a firework."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bFirework &7: &a&lDisable"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a firework."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bFirework &7: &6&lNo Permision"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a firework."
+            - ""
+            - "&6No permissions."
+
+    zeus:
+      name: "&bZeus"
+      material: "BLAZE_SPAWN_EGG"
+      amount: 1
+      lore:
+        - ""
+        - "&rWhen you enter this effect, it will launch a thunder"
+        - "&rlike Zeus."
+        - ""
+        - "&aClick to change."
+      slot: 13
+
+      toggle:
+        state-on:
+          name: "&bZeus &7: &a&lSelect"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a thunder"
+            - "&rlike Zeus."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bZeus &7: &a&lDisable"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a thunder"
+            - "&rlike Zeus."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bZeus &7: &6&lNo Permision"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will launch a thunder"
+            - "&rlike Zeus."
+            - ""
+            - "&6No permissions."
+
+    sheeps:
+      name: "&bSheeps"
+      material: "SHEEP_SPAWN_EGG"
+      amount: 1
+      lore:
+        - ""
+        - "&rWhen you enter this effect, it will throw like a"
+        - "&rrainbow of sheep."
+        - ""
+        - "&aClick to change."
+      slot: 14
+
+      toggle:
+        state-on:
+          name: "&bZeus &7: &a&lSelect"
+          material: "LIME_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will throw like a"
+            - "&rrainbow of sheep."
+            - ""
+            - "&aClick to change."
+        state-off:
+          name: "&bZeus &7: &a&lDisable"
+          material: "RED_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will throw like a"
+            - "&rrainbow of sheep."
+            - ""
+            - "&aClick to change."
+        state-no-permission:
+          name: "&bZeus &7: &6&lNo Permision"
+          material: "ORANGE_STAINED_GLASS_PANE"
+          amount: 1
+          lore:
+            - ""
+            - "&rWhen you enter this effect, it will throw like a"
+            - "&rrainbow of sheep."
+            - ""
+            - "&6No permissions."

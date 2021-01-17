@@ -32,6 +32,5 @@ public class MainModule extends AbstractModule {
         this.install(binder.build());
 
         this.install(new ManagerModule());
-        this.install(new MenuModule());
     }
 }

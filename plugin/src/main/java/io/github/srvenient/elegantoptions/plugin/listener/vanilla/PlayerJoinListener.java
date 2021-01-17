@@ -45,7 +45,7 @@ public class PlayerJoinListener implements Listener {
     @Inject @Named("config") private Configuration config;
     @Inject @Named("language") private Configuration language;
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();

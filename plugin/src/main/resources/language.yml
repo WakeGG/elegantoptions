@@ -59,5 +59,21 @@ message-join:
   no-permission: "&cA problem has occurred because you do not have permission to use this."
 
 effect-join:
-  successful: "&aPlayer &e%player_name% &ahas entered the server."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+  no-permission-open: "&cYou do not have permission to open the join effects menu."
+
+nothing:
+  no-select-effects: "&cYou have no effect selected."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+firework:
+  already-select: "&cYou already have this effect selected when entering."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+zeus:
+  already-select: "&cYou already have this effect selected when entering."
+  no-permission: "&cA problem has occurred because you do not have permission to use this."
+
+sheeps:
+  already-select: "&cYou already have this effect selected when entering."
   no-permission: "&cA problem has occurred because you do not have permission to use this."

@@ -26,6 +26,8 @@ public class MainMenu extends MenuCreator {
 
     @Inject private UserMatcher userMatcher;
 
+    @Inject private EffectMenu effectMenu;
+
     @Inject @Named("language") private Configuration language;
 
     public MainMenu() {
@@ -672,79 +674,18 @@ public class MainMenu extends MenuCreator {
                                                 .build()
                                 )
                                 .setAction(event -> {
-                                    switch (user.getMessageJoin()) {
-                                        case ON:
-                                            user.setMessageJoin(Enums.TypeStatus.OFF);
+                                    if (!player.hasPermission("elegantoptions.effect.menu")) {
+                                        player.closeInventory();
+                                        player.sendMessage(colorize(player, language.getString("effect-join.no-permission-open")));
 
-                                            event.getClickedInventory().setItem(
-                                                    this.getItemSlot("effect-join"),
-                                                    ItemBuilder
-                                                            .newBuilder(
-                                                                    this.getItemMaterial("effect-join"),
-                                                                    this.getItemAmount("effect-join"),
-                                                                    this.getItemData("effect-join")
-                                                            )
-                                                            .setName(this.getItemName(player, "effect-join"))
-                                                            .setLore(this.getItemLore(player, "effect-join"))
-                                                            .build()
-                                            );
-
-                                            event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join") + 9,
-                                                    ItemBuilder
-                                                            .newBuilder(
-                                                                    this.getItemMaterial("effect-join.toggle.state"),
-                                                                    this.getItemAmount("effect-join.toggle.state"),
-                                                                    this.getItemData("effect-join.toggle.state")
-                                                            )
-                                                            .setName(this.getItemName(player, "effect-join.toggle.state"))
-                                                            .setLore(this.getItemLore(player, "effect-join.toggle.state"))
-                                                            .build()
-                                            );
-
-                                            XSound.play(player, "UI_BUTTON_CLICK");
-
-                                            break;
-                                        case OFF:
-                                            user.setMessageJoin(Enums.TypeStatus.ON);
-
-                                            event.getClickedInventory().setItem(
-                                                    this.getItemSlot("effect-join"),
-                                                    ItemBuilder
-                                                            .newBuilder(
-                                                                    this.getItemMaterial("effect-join"),
-                                                                    this.getItemAmount("effect-join"),
-                                                                    this.getItemData("effect-join")
-                                                            )
-                                                            .setName(this.getItemName(player, "effect-join"))
-                                                            .setLore(this.getItemLore(player, "effect-join"))
-                                                            .build()
-                                            );
-
-                                            event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join") + 9,
-                                                    ItemBuilder
-                                                            .newBuilder(
-                                                                    this.getItemMaterial("effect-join.toggle.state"),
-                                                                    this.getItemAmount("effect-join.toggle.state"),
-                                                                    this.getItemData("effect-join.toggle.state")
-                                                            )
-                                                            .setName(this.getItemName(player, "effect-join.toggle.state"))
-                                                            .setLore(this.getItemLore(player, "effect-join.toggle.state"))
-                                                            .build()
-                                            );
-
-                                            XSound.play(player, "UI_BUTTON_CLICK");
-
-                                            break;
-                                        case NO_PERMISSION:
-                                            player.closeInventory();
-                                            player.sendMessage(colorize(player, language.getString("effect-join.no-permission")));
-
-                                            XSound.play(player, "ENTITY_VILLAGER_NO");
-
-                                            break;
+                                        return false;
                                     }
+
+                                    player.closeInventory();
+
+                                    effectMenu.create(player);
+
+                                    XSound.play(player, "UI_BUTTON_CLICK");
 
                                     return true;
                                 })
@@ -1047,6 +988,27 @@ public class MainMenu extends MenuCreator {
                                             )
                                             .setName(this.getItemName(player, "message-join.toggle.state-no-permission"))
                                             .setLore(this.getItemLore(player, "message-join.toggle.state-no-permission"))
+                                            .build()
+                            );
+
+                            break;
+                    }
+
+                    switch (user.getEffectJoin()) {
+                        case NOTHING:
+                        case FIREWORK:
+                        case ZEUS:
+                        case SHEEP:
+                            event.getInventory().setItem(
+                                    this.getItemSlot("effect-join") + 9,
+                                    ItemBuilder
+                                            .newBuilder(
+                                                    this.getItemMaterial("effect-join.toggle.state"),
+                                                    this.getItemAmount("effect-join.toggle.state"),
+                                                    this.getItemData("effect-join.toggle.state")
+                                            )
+                                            .setName(this.getItemName(player, "effect-join.toggle.state"))
+                                            .setLore(this.getItemLore(player, "effect-join.toggle.state"))
                                             .build()
                             );
 
