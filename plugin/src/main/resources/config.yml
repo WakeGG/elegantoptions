@@ -15,11 +15,9 @@ data:
     password: 'passwordXd'
     # MySQL port
     port: 3306
-    # MySQL Pool settings (Recommended to leave as is if you do not know.)
-    pool-settings:
-      maximum-pool-size: 10
-      minimum-idle: 10
-      connection-timeout: 5000 # 5 seconds
+
+# It will notify in the console when there is a new version of the plugin available.
+update-check: true
 
 world:
   # Types:

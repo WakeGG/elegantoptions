@@ -218,7 +218,7 @@ main-menu:
 
     message-join:
       name: "&bMessage when entering &7: %user_messagejoin%"
-      material: "FEATHER"
+      material: "MAP"
       amount: 1
       lore:
         - ""
@@ -284,6 +284,17 @@ main-menu:
             - ""
             - "&aClick to open menu."
 
+    close:
+      name: "&bClose inventory"
+      material: "BARRIER"
+      amount: 1
+      lore:
+        - ""
+        - "&rClose the inventory of the option."
+        - ""
+        - "&aClick to close menu."
+      slot: 40
+
 effect-menu:
   title: "&8Effects Join"
   rows: 5
@@ -291,7 +302,7 @@ effect-menu:
   items:
     nothing:
       name: "&bRemove effects"
-      material: "BARRIER"
+      material: "RED_STAINED_GLASS"
       amount: 1
       lore:
         - ""
@@ -428,3 +439,25 @@ effect-menu:
             - "&rrainbow of sheep."
             - ""
             - "&6No permissions."
+
+    back:
+      name: "&bBack main menu"
+      material: "ARROW"
+      amount: 1
+      lore:
+        - ""
+        - "&rBack main menu."
+        - ""
+        - "&aClick to back main menu."
+      slot: 39
+
+    close:
+      name: "&bClose inventory"
+      material: "BARRIER"
+      amount: 1
+      lore:
+        - ""
+        - "&rClose the inventory of the option."
+        - ""
+        - "&aClick to close menu."
+      slot: 40

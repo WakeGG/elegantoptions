@@ -44,7 +44,7 @@ public class PlayerInteractAtEntityListener implements Listener {
                 User target = userMatcher.getUserId(entity.getUniqueId());
 
                 if (target.getMount() == Enums.TypeStatus.ON) {
-                    if (player.hasPermission("elegant_options.user.rank")) {
+                    if (player.hasPermission("elegantoptions.options.mount.rank")) {
                         if (player.getPassenger() != null) {
                             player.getPassenger().leaveVehicle();
                         } else {

@@ -4,9 +4,9 @@ import dev.srvenient.freya.abstraction.configuration.Configuration;
 import dev.srvenient.freya.api.xseries.XSound;
 
 import io.github.srvenient.elegantoptions.api.Enums;
+import io.github.srvenient.elegantoptions.api.menu.MenuCreator;
 import io.github.srvenient.elegantoptions.api.user.User;
 import io.github.srvenient.elegantoptions.api.user.UserMatcher;
-import io.github.srvenient.elegantoptions.plugin.menu.MenuCreator;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -19,16 +19,16 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import static io.github.srvenient.elegantoptions.plugin.translation.Translation.colorize;
+import static io.github.srvenient.elegantoptions.plugin.utils.InventoryUtils.*;
 
-public class EffectMenu extends MenuCreator {
+public class EffectMenu implements MenuCreator {
 
     @Inject private UserMatcher userMatcher;
 
-    @Inject @Named("language") private Configuration language;
+    @Inject @Named("main-menu") private MenuCreator mainMenu;
 
-    protected EffectMenu() {
-        super("effect-menu");
-    }
+    @Inject @Named("menus") private Configuration menus;
+    @Inject @Named("language") private Configuration language;
 
     @Override
     public Inventory create(Player player) {
@@ -36,23 +36,25 @@ public class EffectMenu extends MenuCreator {
 
         if (user == null) return null;
 
-        GUIBuilder guiBuilder = GUIBuilder.builder(this.getTitle(player), this.getRows())
+        GUIBuilder guiBuilder = GUIBuilder.builder(colorize(player, menus.getString("effect-menu.title")), menus.getInt("effect-menu.rows"))
                 .addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("nothing"))
+                                .builder(getItemSlot(menus, "effect-menu", "nothing"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("nothing"),
-                                                        this.getItemAmount("nothing"),
-                                                        this.getItemData("nothing")
+                                                        getItemMaterial(menus, "effect-menu", "nothing"),
+                                                        getItemAmount(menus, "effect-menu", "nothing"),
+                                                        getItemData(menus, "effect-menu", "nothing")
                                                 )
-                                                .setName(this.getItemName(player, "nothing"))
-                                                .setLore(this.getItemLore(player, "nothing"))
+                                                .setName(getItemName(menus, player, "effect-menu", "nothing"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "nothing"))
                                                 .build()
                                 )
                                 .setAction(event -> {
                                     if (!player.hasPermission("elegantoptions.effect.nothing")) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("nothing.no-permission")));
 
@@ -61,70 +63,70 @@ public class EffectMenu extends MenuCreator {
 
                                     if (user.getEffectJoin() != Enums.Effects.NOTHING) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("nothing"),
+                                                getItemSlot(menus, "effect-menu","nothing"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("nothing"),
-                                                                this.getItemAmount("nothing"),
-                                                                this.getItemData("nothing")
+                                                                getItemMaterial(menus, "effect-menu","nothing"),
+                                                                getItemAmount(menus, "effect-menu","nothing"),
+                                                                getItemData(menus, "effect-menu","nothing")
                                                         )
-                                                        .setName(this.getItemName(player, "nothing"))
-                                                        .setLore(this.getItemLore(player, "nothing"))
+                                                        .setName(getItemName(menus, player, "effect-menu",  "nothing"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "nothing"))
                                                         .build()
                                         );
 
                                         if (user.getEffectJoin() == Enums.Effects.FIREWORK) {
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("firework"),
+                                                    getItemSlot(menus, "effect-menu","firework"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("firework"),
-                                                                    this.getItemAmount("firework"),
-                                                                    this.getItemData("firework")
+                                                                    getItemMaterial(menus, "effect-menu","firework"),
+                                                                    getItemAmount(menus, "effect-menu","firework"),
+                                                                    getItemData(menus, "effect-menu","firework")
                                                             )
-                                                            .setName(this.getItemName(player, "firework"))
-                                                            .setLore(this.getItemLore(player, "firework"))
+                                                            .setName(getItemName(menus, player, "effect-menu",  "firework"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "firework"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("firework") + 9,
+                                                    getItemSlot(menus, "effect-menu","firework") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("firework.toggle.state-off"),
-                                                                    this.getItemAmount("firework.toggle.state-off"),
-                                                                    this.getItemData("firework.toggle.state-off")
+                                                                    getItemMaterial(menus, "effect-menu","firework.toggle.state-off"),
+                                                                    getItemAmount(menus, "effect-menu","firework.toggle.state-off"),
+                                                                    getItemData(menus, "effect-menu","firework.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "firework.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "firework.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-off"))
                                                             .build()
                                             );
                                         }
 
                                         if (user.getEffectJoin() == Enums.Effects.ZEUS) {
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("zeus"),
+                                                    getItemSlot(menus, "effect-menu","zeus"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("zeus"),
-                                                                    this.getItemAmount("zeus"),
-                                                                    this.getItemData("zeus")
+                                                                    getItemMaterial(menus, "effect-menu","zeus"),
+                                                                    getItemAmount(menus, "effect-menu","zeus"),
+                                                                    getItemData(menus, "effect-menu","zeus")
                                                             )
-                                                            .setName(this.getItemName(player, "zeus"))
-                                                            .setLore(this.getItemLore(player, "zeus"))
+                                                            .setName(getItemName(menus, player, "effect-menu", "zeus"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "zeus"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("zeus") + 9,
+                                                    getItemSlot(menus, "effect-menu","zeus") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("zeus.toggle.state-off"),
-                                                                    this.getItemAmount("zeus.toggle.state-off"),
-                                                                    this.getItemData("zeus.toggle.state-off")
+                                                                    getItemMaterial(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                    getItemAmount(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                    getItemData(menus, "effect-menu","zeus.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "zeus.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "zeus.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-off"))
                                                             .build()
                                             );
                                         }
@@ -132,28 +134,28 @@ public class EffectMenu extends MenuCreator {
 
                                         if (user.getEffectJoin() == Enums.Effects.SHEEP) {
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("sheeps"),
+                                                    getItemSlot(menus, "effect-menu","sheeps"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("sheeps"),
-                                                                    this.getItemAmount("sheeps"),
-                                                                    this.getItemData("sheeps")
+                                                                    getItemMaterial(menus, "effect-menu","sheeps"),
+                                                                    getItemAmount(menus, "effect-menu","sheeps"),
+                                                                    getItemData(menus, "effect-menu","sheeps")
                                                             )
-                                                            .setName(this.getItemName(player, "sheeps"))
-                                                            .setLore(this.getItemLore(player, "sheeps"))
+                                                            .setName(getItemName(menus, player, "effect-menu", "sheeps"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "sheeps"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("sheeps") + 9,
+                                                    getItemSlot(menus, "effect-menu","sheeps") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("sheeps.toggle.state-off"),
-                                                                    this.getItemAmount("sheeps.toggle.state-off"),
-                                                                    this.getItemData("sheeps.toggle.state-off")
+                                                                    getItemMaterial(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                    getItemAmount(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                    getItemData(menus, "effect-menu","sheeps.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "sheeps.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "sheeps.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-off"))
                                                             .build()
                                             );
                                         }
@@ -164,28 +166,32 @@ public class EffectMenu extends MenuCreator {
                                         return true;
                                     }
 
+                                    XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                     player.closeInventory();
-                                    player.sendMessage(colorize(player, language.getString("nothing.no-select-effects")));
+                                    player.sendMessage(colorize(player, language.getString("nothing.no-effect-select")));
 
                                     return true;
                                 })
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("firework"))
+                                .builder(getItemSlot(menus, "effect-menu","firework"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("firework"),
-                                                        this.getItemAmount("firework"),
-                                                        this.getItemData("firework")
+                                                        getItemMaterial(menus, "effect-menu","firework"),
+                                                        getItemAmount(menus, "effect-menu","firework"),
+                                                        getItemData(menus, "effect-menu","firework")
                                                 )
-                                                .setName(this.getItemName(player, "firework"))
-                                                .setLore(this.getItemLore(player, "firework"))
+                                                .setName(getItemName(menus, player, "effect-menu", "firework"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "firework"))
                                                 .build()
                                 )
                                 .setAction(event -> {
                                     if (!player.hasPermission("elegantoptions.effect.firework")) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("firework.no-permission")));
 
@@ -193,6 +199,8 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     if (user.getEffectJoin() == Enums.Effects.FIREWORK) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("firework.already-select")));
 
@@ -200,55 +208,55 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("firework"),
+                                            getItemSlot(menus, "effect-menu","firework"),
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("firework"),
-                                                            this.getItemAmount("firework"),
-                                                            this.getItemData("firework")
+                                                            getItemMaterial(menus, "effect-menu","firework"),
+                                                            getItemAmount(menus, "effect-menu","firework"),
+                                                            getItemData(menus, "effect-menu","firework")
                                                     )
-                                                    .setName(this.getItemName(player, "firework"))
-                                                    .setLore(this.getItemLore(player, "firework"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "firework"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "firework"))
                                                     .build()
                                     );
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("firework") + 9,
+                                            getItemSlot(menus, "effect-menu","firework") + 9,
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("firework.toggle.state-on"),
-                                                            this.getItemAmount("firework.toggle.state-on"),
-                                                            this.getItemData("firework.toggle.state-on")
+                                                            getItemMaterial(menus, "effect-menu","firework.toggle.state-on"),
+                                                            getItemAmount(menus, "effect-menu","firework.toggle.state-on"),
+                                                            getItemData(menus, "effect-menu","firework.toggle.state-on")
                                                     )
-                                                    .setName(this.getItemName(player, "firework.toggle.state-on"))
-                                                    .setLore(this.getItemLore(player, "firework.toggle.state-on"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-on"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-on"))
                                                     .build()
                                     );
 
                                     if (user.getEffectJoin() == Enums.Effects.ZEUS) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("zeus"),
+                                                getItemSlot(menus, "effect-menu","zeus"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("zeus"),
-                                                                this.getItemAmount("zeus"),
-                                                                this.getItemData("zeus")
+                                                                getItemMaterial(menus, "effect-menu","zeus"),
+                                                                getItemAmount(menus, "effect-menu","zeus"),
+                                                                getItemData(menus, "effect-menu","zeus")
                                                         )
-                                                        .setName(this.getItemName(player, "zeus"))
-                                                        .setLore(this.getItemLore(player, "zeus"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "zeus"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("zeus") + 9,
+                                                getItemSlot(menus, "effect-menu","zeus") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("zeus.toggle.state-off"),
-                                                                this.getItemAmount("zeus.toggle.state-off"),
-                                                                this.getItemData("zeus.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","zeus.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "zeus.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "zeus.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -256,28 +264,28 @@ public class EffectMenu extends MenuCreator {
 
                                     if (user.getEffectJoin() == Enums.Effects.SHEEP) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("sheeps"),
+                                                getItemSlot(menus, "effect-menu","sheeps"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("sheeps"),
-                                                                this.getItemAmount("sheeps"),
-                                                                this.getItemData("sheeps")
+                                                                getItemMaterial(menus, "effect-menu","sheeps"),
+                                                                getItemAmount(menus, "effect-menu","sheeps"),
+                                                                getItemData(menus, "effect-menu","sheeps")
                                                         )
-                                                        .setName(this.getItemName(player, "sheeps"))
-                                                        .setLore(this.getItemLore(player, "sheeps"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "sheeps"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("sheeps") + 9,
+                                                getItemSlot(menus, "effect-menu","sheeps") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("sheeps.toggle.state-off"),
-                                                                this.getItemAmount("sheeps.toggle.state-off"),
-                                                                this.getItemData("sheeps.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","sheeps.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "sheeps.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "sheeps.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -290,20 +298,22 @@ public class EffectMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("zeus"))
+                                .builder(getItemSlot(menus, "effect-menu","zeus"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("zeus"),
-                                                        this.getItemAmount("zeus"),
-                                                        this.getItemData("zeus")
+                                                        getItemMaterial(menus, "effect-menu","zeus"),
+                                                        getItemAmount(menus, "effect-menu","zeus"),
+                                                        getItemData(menus, "effect-menu","zeus")
                                                 )
-                                                .setName(this.getItemName(player, "zeus"))
-                                                .setLore(this.getItemLore(player, "zeus"))
+                                                .setName(getItemName(menus, player, "effect-menu", "zeus"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "zeus"))
                                                 .build()
                                 )
                                 .setAction(event -> {
                                     if (!player.hasPermission("elegantoptions.effect.zeus")) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("zeus.no-permission")));
 
@@ -311,6 +321,8 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     if (user.getEffectJoin() == Enums.Effects.ZEUS) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("zeus.already-select")));
 
@@ -318,55 +330,55 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("zeus"),
+                                            getItemSlot(menus, "effect-menu","zeus"),
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("zeus"),
-                                                            this.getItemAmount("zeus"),
-                                                            this.getItemData("zeus")
+                                                            getItemMaterial(menus, "effect-menu","zeus"),
+                                                            getItemAmount(menus, "effect-menu","zeus"),
+                                                            getItemData(menus, "effect-menu","zeus")
                                                     )
-                                                    .setName(this.getItemName(player, "zeus"))
-                                                    .setLore(this.getItemLore(player, "zeus"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "zeus"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "zeus"))
                                                     .build()
                                     );
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("zeus") + 9,
+                                            getItemSlot(menus, "effect-menu","zeus") + 9,
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("zeus.toggle.state-on"),
-                                                            this.getItemAmount("zeus.toggle.state-on"),
-                                                            this.getItemData("zeus.toggle.state-on")
+                                                            getItemMaterial(menus, "effect-menu","zeus.toggle.state-on"),
+                                                            getItemAmount(menus, "effect-menu","zeus.toggle.state-on"),
+                                                            getItemData(menus, "effect-menu","zeus.toggle.state-on")
                                                     )
-                                                    .setName(this.getItemName(player, "zeus.toggle.state-on"))
-                                                    .setLore(this.getItemLore(player, "zeus.toggle.state-on"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-on"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-on"))
                                                     .build()
                                     );
 
                                     if (user.getEffectJoin() == Enums.Effects.FIREWORK) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("firework"),
+                                                getItemSlot(menus, "effect-menu","firework"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("firework"),
-                                                                this.getItemAmount("firework"),
-                                                                this.getItemData("firework")
+                                                                getItemMaterial(menus, "effect-menu","firework"),
+                                                                getItemAmount(menus, "effect-menu","firework"),
+                                                                getItemData(menus, "effect-menu","firework")
                                                         )
-                                                        .setName(this.getItemName(player, "firework"))
-                                                        .setLore(this.getItemLore(player, "firework"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "firework"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "firework"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("firework") + 9,
+                                                getItemSlot(menus, "effect-menu","firework") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("firework.toggle.state-off"),
-                                                                this.getItemAmount("firework.toggle.state-off"),
-                                                                this.getItemData("firework.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","firework.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","firework.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","firework.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "firework.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "firework.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -374,28 +386,28 @@ public class EffectMenu extends MenuCreator {
 
                                     if (user.getEffectJoin() == Enums.Effects.SHEEP) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("sheeps"),
+                                                getItemSlot(menus, "effect-menu","sheeps"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("sheeps"),
-                                                                this.getItemAmount("sheeps"),
-                                                                this.getItemData("sheeps")
+                                                                getItemMaterial(menus, "effect-menu","sheeps"),
+                                                                getItemAmount(menus, "effect-menu","sheeps"),
+                                                                getItemData(menus, "effect-menu","sheeps")
                                                         )
-                                                        .setName(this.getItemName(player, "sheeps"))
-                                                        .setLore(this.getItemLore(player, "sheeps"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "sheeps"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("sheeps") + 9,
+                                                getItemSlot(menus, "effect-menu","sheeps") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("sheeps.toggle.state-off"),
-                                                                this.getItemAmount("sheeps.toggle.state-off"),
-                                                                this.getItemData("sheeps.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","sheeps.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "sheeps.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "sheeps.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -408,20 +420,22 @@ public class EffectMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("sheeps"))
+                                .builder(getItemSlot(menus, "effect-menu","sheeps"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("sheeps"),
-                                                        this.getItemAmount("sheeps"),
-                                                        this.getItemData("sheeps")
+                                                        getItemMaterial(menus, "effect-menu","sheeps"),
+                                                        getItemAmount(menus, "effect-menu","sheeps"),
+                                                        getItemData(menus, "effect-menu","sheeps")
                                                 )
-                                                .setName(this.getItemName(player, "sheeps"))
-                                                .setLore(this.getItemLore(player, "sheeps"))
+                                                .setName(getItemName(menus, player, "effect-menu", "sheeps"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "sheeps"))
                                                 .build()
                                 )
                                 .setAction(event -> {
                                     if (!player.hasPermission("elegantoptions.effect.sheeps")) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("sheeps.no-permission")));
 
@@ -429,6 +443,8 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     if (user.getEffectJoin() == Enums.Effects.SHEEP) {
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("sheeps.already-select")));
 
@@ -436,55 +452,55 @@ public class EffectMenu extends MenuCreator {
                                     }
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("sheeps"),
+                                            getItemSlot(menus, "effect-menu","sheeps"),
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("sheeps"),
-                                                            this.getItemAmount("sheeps"),
-                                                            this.getItemData("sheeps")
+                                                            getItemMaterial(menus, "effect-menu","sheeps"),
+                                                            getItemAmount(menus, "effect-menu","sheeps"),
+                                                            getItemData(menus, "effect-menu","sheeps")
                                                     )
-                                                    .setName(this.getItemName(player, "sheeps"))
-                                                    .setLore(this.getItemLore(player, "sheeps"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "sheeps"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "sheeps"))
                                                     .build()
                                     );
 
                                     event.getClickedInventory().setItem(
-                                            this.getItemSlot("sheeps") + 9,
+                                            getItemSlot(menus, "effect-menu","sheeps") + 9,
                                             ItemBuilder
                                                     .newBuilder(
-                                                            this.getItemMaterial("sheeps.toggle.state-on"),
-                                                            this.getItemAmount("sheeps.toggle.state-on"),
-                                                            this.getItemData("sheeps.toggle.state-on")
+                                                            getItemMaterial(menus, "effect-menu","sheeps.toggle.state-on"),
+                                                            getItemAmount(menus, "effect-menu","sheeps.toggle.state-on"),
+                                                            getItemData(menus, "effect-menu","sheeps.toggle.state-on")
                                                     )
-                                                    .setName(this.getItemName(player, "sheeps.toggle.state-on"))
-                                                    .setLore(this.getItemLore(player, "sheeps.toggle.state-on"))
+                                                    .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-on"))
+                                                    .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-on"))
                                                     .build()
                                     );
 
                                     if (user.getEffectJoin() == Enums.Effects.FIREWORK) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("firework"),
+                                                getItemSlot(menus, "effect-menu","firework"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("firework"),
-                                                                this.getItemAmount("firework"),
-                                                                this.getItemData("firework")
+                                                                getItemMaterial(menus, "effect-menu","firework"),
+                                                                getItemAmount(menus, "effect-menu","firework"),
+                                                                getItemData(menus, "effect-menu","firework")
                                                         )
-                                                        .setName(this.getItemName(player, "firework"))
-                                                        .setLore(this.getItemLore(player, "firework"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "firework"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "firework"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("firework") + 9,
+                                                getItemSlot(menus, "effect-menu","firework") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("firework.toggle.state-off"),
-                                                                this.getItemAmount("firework.toggle.state-off"),
-                                                                this.getItemData("firework.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","firework.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","firework.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","firework.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "firework.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "firework.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -492,28 +508,28 @@ public class EffectMenu extends MenuCreator {
 
                                     if (user.getEffectJoin() == Enums.Effects.ZEUS) {
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("zeus"),
+                                                getItemSlot(menus, "effect-menu","zeus"),
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("zeus"),
-                                                                this.getItemAmount("zeus"),
-                                                                this.getItemData("zeus")
+                                                                getItemMaterial(menus, "effect-menu","zeus"),
+                                                                getItemAmount(menus, "effect-menu","zeus"),
+                                                                getItemData(menus, "effect-menu","zeus")
                                                         )
-                                                        .setName(this.getItemName(player, "zeus"))
-                                                        .setLore(this.getItemLore(player, "zeus"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "zeus"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus"))
                                                         .build()
                                         );
 
                                         event.getClickedInventory().setItem(
-                                                this.getItemSlot("zeus") + 9,
+                                                getItemSlot(menus, "effect-menu","zeus") + 9,
                                                 ItemBuilder
                                                         .newBuilder(
-                                                                this.getItemMaterial("zeus.toggle.state-off"),
-                                                                this.getItemAmount("zeus.toggle.state-off"),
-                                                                this.getItemData("zeus.toggle.state-off")
+                                                                getItemMaterial(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                getItemAmount(menus, "effect-menu","zeus.toggle.state-off"),
+                                                                getItemData(menus, "effect-menu","zeus.toggle.state-off")
                                                         )
-                                                        .setName(this.getItemName(player, "zeus.toggle.state-off"))
-                                                        .setLore(this.getItemLore(player, "zeus.toggle.state-off"))
+                                                        .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-off"))
+                                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-off"))
                                                         .build()
                                         );
                                     }
@@ -524,44 +540,88 @@ public class EffectMenu extends MenuCreator {
                                     return true;
                                 })
                                 .build()
+                ).addItem(
+                        ItemClickable
+                                .builder(getItemSlot(menus, "effect-menu","back"))
+                                .setItemStack(
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "effect-menu","back"),
+                                                        getItemAmount(menus, "effect-menu","back"),
+                                                        getItemData(menus, "effect-menu","back")
+                                                )
+                                                .setName(getItemName(menus, player, "effect-menu", "back"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "back"))
+                                                .build()
+                                )
+                                .setAction(event -> {
+                                    XSound.play(player, "UI_BUTTON_CLICK");
+
+                                    player.openInventory(mainMenu.create(player));
+
+                                    return true;
+                                })
+                                .build()
+                ).addItem(
+                        ItemClickable
+                                .builder(getItemSlot(menus, "effect-menu","close"))
+                                .setItemStack(
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "effect-menu","close"),
+                                                        getItemAmount(menus, "effect-menu","close"),
+                                                        getItemData(menus, "effect-menu","close")
+                                                )
+                                                .setName(getItemName(menus, player, "effect-menu", "close"))
+                                                .setLore(getItemLore(menus, player, "effect-menu", "close"))
+                                                .build()
+                                )
+                                .setAction(event -> {
+                                    XSound.play(player, "BLOCK_CHEST_CLOSE");
+
+                                    player.closeInventory();
+
+                                    return true;
+                                })
+                                .build()
                 ).openAction(event -> {
                     if (user.getEffectJoin() == Enums.Effects.NOTHING) {
                         event.getInventory().setItem(
-                                this.getItemSlot("firework") + 9,
+                                getItemSlot(menus, "effect-menu","firework") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("firework.toggle.state-off"),
-                                                this.getItemAmount("firework.toggle.state-off"),
-                                                this.getItemData("firework.toggle.state-off")
+                                                getItemMaterial(menus, "effect-menu","firework.toggle.state-off"),
+                                                getItemAmount(menus, "effect-menu","firework.toggle.state-off"),
+                                                getItemData(menus, "effect-menu","firework.toggle.state-off")
                                         )
-                                        .setName(this.getItemName(player, "firework.toggle.state-off"))
-                                        .setLore(this.getItemLore(player, "firework.toggle.state-off"))
+                                        .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-off"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-off"))
                                         .build()
                         );
 
                         event.getInventory().setItem(
-                                this.getItemSlot("zeus") + 9,
+                                getItemSlot(menus, "effect-menu","zeus") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("zeus.toggle.state-off"),
-                                                this.getItemAmount("zeus.toggle.state-off"),
-                                                this.getItemData("zeus.toggle.state-off")
+                                                getItemMaterial(menus, "effect-menu","zeus.toggle.state-off"),
+                                                getItemAmount(menus, "effect-menu","zeus.toggle.state-off"),
+                                                getItemData(menus, "effect-menu","zeus.toggle.state-off")
                                         )
-                                        .setName(this.getItemName(player, "zeus.toggle.state-off"))
-                                        .setLore(this.getItemLore(player, "zeus.toggle.state-off"))
+                                        .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-off"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-off"))
                                         .build()
                         );
 
                         event.getInventory().setItem(
-                                this.getItemSlot("sheeps") + 9,
+                                getItemSlot(menus, "effect-menu","sheeps") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("sheeps.toggle.state-off"),
-                                                this.getItemAmount("sheeps.toggle.state-off"),
-                                                this.getItemData("sheeps.toggle.state-off")
+                                                getItemMaterial(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                getItemAmount(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                getItemData(menus, "effect-menu","sheeps.toggle.state-off")
                                         )
-                                        .setName(this.getItemName(player, "sheeps.toggle.state-off"))
-                                        .setLore(this.getItemLore(player, "sheeps.toggle.state-off"))
+                                        .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-off"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-off"))
                                         .build()
                         );
                     }
@@ -569,42 +629,42 @@ public class EffectMenu extends MenuCreator {
                     if (player.hasPermission("elegantoptions.effect.firework")) {
                         if (user.getEffectJoin() == Enums.Effects.FIREWORK) {
                             event.getInventory().setItem(
-                                    this.getItemSlot("firework") + 9,
+                                    getItemSlot(menus, "effect-menu","firework") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("firework.toggle.state-on"),
-                                                    this.getItemAmount("firework.toggle.state-on"),
-                                                    this.getItemData("firework.toggle.state-on")
+                                                    getItemMaterial(menus, "effect-menu","firework.toggle.state-on"),
+                                                    getItemAmount(menus, "effect-menu","firework.toggle.state-on"),
+                                                    getItemData(menus, "effect-menu","firework.toggle.state-on")
                                             )
-                                            .setName(this.getItemName(player, "firework.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "firework.toggle.state-on"))
+                                            .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-on"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-on"))
                                             .build()
                             );
                         } else {
                             event.getInventory().setItem(
-                                    this.getItemSlot("firework") + 9,
+                                    getItemSlot(menus, "effect-menu","firework") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("firework.toggle.state-off"),
-                                                    this.getItemAmount("firework.toggle.state-off"),
-                                                    this.getItemData("firework.toggle.state-off")
+                                                    getItemMaterial(menus, "effect-menu","firework.toggle.state-off"),
+                                                    getItemAmount(menus, "effect-menu","firework.toggle.state-off"),
+                                                    getItemData(menus, "effect-menu","firework.toggle.state-off")
                                             )
-                                            .setName(this.getItemName(player, "firework.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "firework.toggle.state-off"))
+                                            .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-off"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-off"))
                                             .build()
                             );
                         }
                     } else {
                         event.getInventory().setItem(
-                                this.getItemSlot("firework") + 9,
+                                getItemSlot(menus, "effect-menu","firework") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("firework.toggle.state-no-permission"),
-                                                this.getItemAmount("firework.toggle.state-no-permission"),
-                                                this.getItemData("firework.toggle.state-no-permission")
+                                                getItemMaterial(menus, "effect-menu","firework.toggle.state-no-permission"),
+                                                getItemAmount(menus, "effect-menu","firework.toggle.state-no-permission"),
+                                                getItemData(menus, "effect-menu","firework.toggle.state-no-permission")
                                         )
-                                        .setName(this.getItemName(player, "firework.toggle.state-no-permission"))
-                                        .setLore(this.getItemLore(player, "firework.toggle.state-no-permission"))
+                                        .setName(getItemName(menus, player, "effect-menu", "firework.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "firework.toggle.state-no-permission"))
                                         .build()
                         );
                     }
@@ -612,42 +672,42 @@ public class EffectMenu extends MenuCreator {
                     if (player.hasPermission("elegantoptions.effect.zeus")) {
                         if (user.getEffectJoin() == Enums.Effects.ZEUS) {
                             event.getInventory().setItem(
-                                    this.getItemSlot("zeus") + 9,
+                                    getItemSlot(menus, "effect-menu","zeus") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("zeus.toggle.state-on"),
-                                                    this.getItemAmount("zeus.toggle.state-on"),
-                                                    this.getItemData("zeus.toggle.state-on")
+                                                    getItemMaterial(menus, "effect-menu","zeus.toggle.state-on"),
+                                                    getItemAmount(menus, "effect-menu","zeus.toggle.state-on"),
+                                                    getItemData(menus, "effect-menu","zeus.toggle.state-on")
                                             )
-                                            .setName(this.getItemName(player, "zeus.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "zeus.toggle.state-on"))
+                                            .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-on"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-on"))
                                             .build()
                             );
                         } else {
                             event.getInventory().setItem(
-                                    this.getItemSlot("zeus") + 9,
+                                    getItemSlot(menus, "effect-menu","zeus") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("zeus.toggle.state-off"),
-                                                    this.getItemAmount("zeus.toggle.state-off"),
-                                                    this.getItemData("zeus.toggle.state-off")
+                                                    getItemMaterial(menus, "effect-menu","zeus.toggle.state-off"),
+                                                    getItemAmount(menus, "effect-menu","zeus.toggle.state-off"),
+                                                    getItemData(menus, "effect-menu","zeus.toggle.state-off")
                                             )
-                                            .setName(this.getItemName(player, "zeus.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "zeus.toggle.state-off"))
+                                            .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-off"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-off"))
                                             .build()
                             );
                         }
                     } else {
                         event.getInventory().setItem(
-                                this.getItemSlot("zeus") + 9,
+                                getItemSlot(menus, "effect-menu","zeus") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("zeus.toggle.state-no-permission"),
-                                                this.getItemAmount("zeus.toggle.state-no-permission"),
-                                                this.getItemData("zeus.toggle.state-no-permission")
+                                                getItemMaterial(menus, "effect-menu","zeus.toggle.state-no-permission"),
+                                                getItemAmount(menus, "effect-menu","zeus.toggle.state-no-permission"),
+                                                getItemData(menus, "effect-menu","zeus.toggle.state-no-permission")
                                         )
-                                        .setName(this.getItemName(player, "zeus.toggle.state-no-permission"))
-                                        .setLore(this.getItemLore(player, "zeus.toggle.state-no-permission"))
+                                        .setName(getItemName(menus, player, "effect-menu", "zeus.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "zeus.toggle.state-no-permission"))
                                         .build()
                         );
                     }
@@ -655,42 +715,42 @@ public class EffectMenu extends MenuCreator {
                     if (player.hasPermission("elegantoptions.effect.sheeps")) {
                         if (user.getEffectJoin() == Enums.Effects.SHEEP) {
                             event.getInventory().setItem(
-                                    this.getItemSlot("sheeps") + 9,
+                                    getItemSlot(menus, "effect-menu","sheeps") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("sheeps.toggle.state-on"),
-                                                    this.getItemAmount("sheeps.toggle.state-on"),
-                                                    this.getItemData("sheeps.toggle.state-on")
+                                                    getItemMaterial(menus, "effect-menu","sheeps.toggle.state-on"),
+                                                    getItemAmount(menus, "effect-menu","sheeps.toggle.state-on"),
+                                                    getItemData(menus, "effect-menu","sheeps.toggle.state-on")
                                             )
-                                            .setName(this.getItemName(player, "sheeps.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "sheeps.toggle.state-on"))
+                                            .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-on"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-on"))
                                             .build()
                             );
                         } else {
                             event.getInventory().setItem(
-                                    this.getItemSlot("sheeps") + 9,
+                                    getItemSlot(menus, "effect-menu","sheeps") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("sheeps.toggle.state-off"),
-                                                    this.getItemAmount("sheeps.toggle.state-off"),
-                                                    this.getItemData("sheeps.toggle.state-off")
+                                                    getItemMaterial(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                    getItemAmount(menus, "effect-menu","sheeps.toggle.state-off"),
+                                                    getItemData(menus, "effect-menu","sheeps.toggle.state-off")
                                             )
-                                            .setName(this.getItemName(player, "sheeps.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "sheeps.toggle.state-off"))
+                                            .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-off"))
+                                            .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-off"))
                                             .build()
                             );
                         }
                     } else {
                         event.getInventory().setItem(
-                                this.getItemSlot("sheeps") + 9,
+                                getItemSlot(menus, "effect-menu","sheeps") + 9,
                                 ItemBuilder
                                         .newBuilder(
-                                                this.getItemMaterial("sheeps.toggle.state-no-permission"),
-                                                this.getItemAmount("sheeps.toggle.state-no-permission"),
-                                                this.getItemData("sheeps.toggle.state-no-permission")
+                                                getItemMaterial(menus, "effect-menu","sheeps.toggle.state-no-permission"),
+                                                getItemAmount(menus, "effect-menu","sheeps.toggle.state-no-permission"),
+                                                getItemData(menus, "effect-menu","sheeps.toggle.state-no-permission")
                                         )
-                                        .setName(this.getItemName(player, "sheeps.toggle.state-no-permission"))
-                                        .setLore(this.getItemLore(player, "sheeps.toggle.state-no-permission"))
+                                        .setName(getItemName(menus, player, "effect-menu", "sheeps.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "effect-menu", "sheeps.toggle.state-no-permission"))
                                         .build()
                         );
                     }

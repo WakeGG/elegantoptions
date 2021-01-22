@@ -2,10 +2,7 @@ package io.github.srvenient.elegantoptions.plugin.loader;
 
 import dev.srvenient.freya.abstraction.loader.Loader;
 
-import io.github.srvenient.elegantoptions.plugin.listener.PlayerEffectJoinListener;
-import io.github.srvenient.elegantoptions.plugin.listener.PlayerFlyJoinListener;
-import io.github.srvenient.elegantoptions.plugin.listener.PlayerMessageJoinListener;
-import io.github.srvenient.elegantoptions.plugin.listener.PlayerVisibilityJoinListener;
+import io.github.srvenient.elegantoptions.plugin.listener.PlayerActionListener;
 import io.github.srvenient.elegantoptions.plugin.listener.vanilla.*;
 
 import org.bukkit.Bukkit;
@@ -22,30 +19,26 @@ public class EventLoader implements Loader {
     @Inject private Plugin plugin;
 
     @Inject private PlayerJoinListener playerJoinListener;
+    @Inject private PlayerLeaveListener playerLeaveListener;
     @Inject private PlayerMoveListener playerMoveListener;
     @Inject private AsyncPlayerChatListener asyncPlayerChatListener;
     @Inject private PlayerToggleFlightListener playerToggleFlightListener;
     @Inject private PlayerChangedWorldListener playerChangedWorldListener;
     @Inject private PlayerInteractAtEntityListener playerInteractAtEntityListener;
 
-    @Inject private PlayerVisibilityJoinListener playerVisibilityJoinListener;
-    @Inject private PlayerFlyJoinListener playerFlyJoinListener;
-    @Inject private PlayerMessageJoinListener playerMessageJoinListener;
-    @Inject private PlayerEffectJoinListener playerEffectJoinListener;
+    @Inject private PlayerActionListener playerActionListener;
 
     @Override
     public void load() {
         register(
                 playerJoinListener,
+                playerLeaveListener,
                 playerMoveListener,
                 asyncPlayerChatListener,
                 playerToggleFlightListener,
                 playerChangedWorldListener,
                 playerInteractAtEntityListener,
-                playerVisibilityJoinListener,
-                playerFlyJoinListener,
-                playerMessageJoinListener,
-                playerEffectJoinListener,
+                playerActionListener,
                 new GUIListeners()
         );
     }

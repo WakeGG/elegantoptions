@@ -2,10 +2,9 @@ package io.github.srvenient.elegantoptions.plugin.command;
 
 import dev.srvenient.freya.abstraction.configuration.Configuration;
 
-import io.github.srvenient.elegantoptions.api.user.User;
+import io.github.srvenient.elegantoptions.api.menu.MenuCreator;
 import io.github.srvenient.elegantoptions.api.user.UserMatcher;
 
-import io.github.srvenient.elegantoptions.plugin.menu.option.MainMenu;
 import io.github.srvenient.elegantoptions.plugin.utils.Utils;
 
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -24,23 +23,26 @@ public class MainCommand implements CommandClass {
 
     @Inject private UserMatcher userMatcher;
 
-    @Inject private MainMenu mainMenu;
+    @Inject @Named("main-menu") private MenuCreator mainMenu;
 
     @Inject @Named("config") private Configuration config;
     @Inject @Named("language") private Configuration language;
 
-    @Command(names = "help")
+    @Command(names = {"", "?", "help"}, desc = "Help command.")
     public boolean helpCommand(@Sender Player player) {
-        player.sendMessage("hola");
+        language.getStringList("help.message")
+                .forEach(message -> player.sendMessage(colorize(player, message)));
 
         return true;
     }
 
-    @Command(names = "showoptions")
+    @Command(names = "showoptions", desc = "Open menu options")
     public boolean openCommand(@Sender Player player) {
-        User user = userMatcher.getUserId(player.getUniqueId());
+        if (!player.hasPermission("elegantoptions.menu.mainmenu")) {
+            player.sendMessage(colorize(player, language.getString("showoptions.no-permission")));
 
-        if (user == null) return true;
+            return true;
+        }
 
         if (!Utils.playerValidWorld(player, config)) {
             player.sendMessage(colorize(player, language.getString("showoptions.error")));

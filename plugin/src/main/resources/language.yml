@@ -30,8 +30,17 @@ commons:
   effect-join-sheeps: "&dSheep's"
   effect-join-no-permission: "&cNo permission"
 
+help:
+  message:
+    - "&6&l          [ElegantOptions]"
+    - ""
+    - "&b/elegantoptions showoptions &eOpen to menu."
+    - ""
+    - "&6&l          [ElegantOptions]"
+
 showoptions:
   error: "&cAn error has occurred because you are not in a valid world to use this command."
+  no-permission: "An error has occurred because you do not have the permission to open the main menu."
 
 visibility:
   no-permission: "&cA problem has occurred because you do not have permission to use this."
@@ -63,7 +72,7 @@ effect-join:
   no-permission-open: "&cYou do not have permission to open the join effects menu."
 
 nothing:
-  no-select-effects: "&cYou have no effect selected."
+  no-effect-select: "&cYou have no effect selected."
   no-permission: "&cA problem has occurred because you do not have permission to use this."
 
 firework:

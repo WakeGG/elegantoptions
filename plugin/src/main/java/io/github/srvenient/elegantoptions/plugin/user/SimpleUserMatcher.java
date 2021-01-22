@@ -24,13 +24,13 @@ public class SimpleUserMatcher implements UserMatcher {
         if (player == null) {
             return null;
         } else {
-            if (player.isOnline()) {
-                Optional<User> userOptional = userCache.getIfPresent(uuid.toString());
+            Optional<User> userOptional = userCache.getIfPresent(uuid.toString());
 
-                return userOptional.orElse(null);
-            } else {
-                return null;
+            if (userOptional.isPresent()) {
+                return userOptional.get();
             }
         }
+
+        return null;
     }
 }

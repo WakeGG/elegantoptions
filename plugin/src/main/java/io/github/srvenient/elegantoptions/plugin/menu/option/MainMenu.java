@@ -3,9 +3,8 @@ package io.github.srvenient.elegantoptions.plugin.menu.option;
 import dev.srvenient.freya.abstraction.configuration.Configuration;
 import dev.srvenient.freya.api.xseries.XSound;
 
-import io.github.srvenient.elegantoptions.plugin.menu.MenuCreator;
-
 import io.github.srvenient.elegantoptions.api.Enums;
+import io.github.srvenient.elegantoptions.api.menu.MenuCreator;
 import io.github.srvenient.elegantoptions.api.user.User;
 import io.github.srvenient.elegantoptions.api.user.UserMatcher;
 
@@ -20,39 +19,35 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import static io.github.srvenient.elegantoptions.plugin.utils.InventoryUtils.*;
 import static io.github.srvenient.elegantoptions.plugin.translation.Translation.colorize;
 
-public class MainMenu extends MenuCreator {
+public class MainMenu implements MenuCreator {
 
     @Inject private UserMatcher userMatcher;
 
-    @Inject private EffectMenu effectMenu;
+    @Inject @Named("effect-menu") private MenuCreator effectMenu;
 
+    @Inject @Named("menus") private Configuration menus;
     @Inject @Named("language") private Configuration language;
-
-    public MainMenu() {
-        super("main-menu");
-    }
 
     @Override
     public Inventory create(Player player) {
         User user = userMatcher.getUserId(player.getUniqueId());
 
-        if (user == null) return null;
-
-        GUIBuilder guiBuilder = GUIBuilder.builder(this.getTitle(player), this.getRows())
+        GUIBuilder guiBuilder = GUIBuilder.builder(colorize(player, menus.getString("main-menu.title")), menus.getInt("main-menu.rows"))
                 .addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("visibility"))
+                                .builder(getItemSlot(menus, "main-menu", "visibility"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("visibility"),
-                                                        this.getItemAmount("visibility"),
-                                                        this.getItemData("visibility")
+                                                        getItemMaterial(menus, "main-menu", "visibility"),
+                                                        getItemAmount(menus, "main-menu", "visibility"),
+                                                        getItemData(menus, "main-menu", "visibility")
                                                 )
-                                                .setName(this.getItemName(player, "visibility"))
-                                                .setLore(this.getItemLore(player, "visibility"))
+                                                .setName(getItemName(menus, player, "main-menu", "visibility"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "visibility"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -61,35 +56,35 @@ public class MainMenu extends MenuCreator {
                                             user.setVisibility(Enums.TypeStatus.ONLY_RANK);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility"),
+                                                    getItemSlot(menus, "main-menu", "visibility"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility"),
-                                                                    this.getItemAmount("visibility"),
-                                                                    this.getItemData("visibility")
+                                                                    getItemMaterial(menus, "main-menu", "visibility"),
+                                                                    getItemAmount(menus, "main-menu", "visibility"),
+                                                                    getItemData(menus, "main-menu", "visibility")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility"))
-                                                            .setLore(this.getItemLore(player, "visibility"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility") + 9,
+                                                    getItemSlot(menus, "main-menu", "visibility") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility.toggle.state-only-rank"),
-                                                                    this.getItemAmount("visibility.toggle.state-only-rank"),
-                                                                    this.getItemData("visibility.toggle.state-only-rank")
+                                                                    getItemMaterial(menus, "main-menu", "visibility.toggle.state-only-rank"),
+                                                                    getItemAmount(menus, "main-menu", "visibility.toggle.state-only-rank"),
+                                                                    getItemData(menus, "main-menu", "visibility.toggle.state-only-rank")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility.toggle.state-only-rank"))
-                                                            .setLore(this.getItemLore(player, "visibility.toggle.state-only-rank"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-only-rank"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-only-rank"))
                                                             .build()
                                             );
 
                                             XSound.play(player, "UI_BUTTON_CLICK");
 
                                             Bukkit.getOnlinePlayers().forEach(players -> {
-                                                if (players.hasPermission("elegant_options.user.rank")) {
+                                                if (players.hasPermission("elegantoptions.options.visibility.rank")) {
                                                     player.showPlayer(players);
                                                 } else {
                                                     player.hidePlayer(players);
@@ -101,28 +96,28 @@ public class MainMenu extends MenuCreator {
                                             user.setVisibility(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility"),
+                                                    getItemSlot(menus, "main-menu", "visibility"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility"),
-                                                                    this.getItemAmount("visibility"),
-                                                                    this.getItemData("visibility")
+                                                                    getItemMaterial(menus, "main-menu", "visibility"),
+                                                                    getItemAmount(menus, "main-menu", "visibility"),
+                                                                    getItemData(menus, "main-menu", "visibility")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility"))
-                                                            .setLore(this.getItemLore(player, "visibility"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility") + 9,
+                                                    getItemSlot(menus, "main-menu", "visibility") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility.toggle.state-off"),
-                                                                    this.getItemAmount("visibility.toggle.state-off"),
-                                                                    this.getItemData("visibility.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "visibility.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "visibility.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "visibility.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "visibility.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -135,28 +130,28 @@ public class MainMenu extends MenuCreator {
                                             user.setVisibility(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility"),
+                                                    getItemSlot(menus, "main-menu", "visibility"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility"),
-                                                                    this.getItemAmount("visibility"),
-                                                                    this.getItemData("visibility")
+                                                                    getItemMaterial(menus, "main-menu", "visibility"),
+                                                                    getItemAmount(menus, "main-menu", "visibility"),
+                                                                    getItemData(menus, "main-menu", "visibility")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility"))
-                                                            .setLore(this.getItemLore(player, "visibility"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("visibility") + 9,
+                                                    getItemSlot(menus, "main-menu", "visibility") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("visibility.toggle.state-on"),
-                                                                    this.getItemAmount("visibility.toggle.state-on"),
-                                                                    this.getItemData("visibility.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "visibility.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "visibility.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "visibility.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "visibility.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "visibility.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -179,16 +174,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("chat"))
+                                .builder(getItemSlot(menus, "main-menu", "chat"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("chat"),
-                                                        this.getItemAmount("chat"),
-                                                        this.getItemData("chat")
+                                                        getItemMaterial(menus, "main-menu", "chat"),
+                                                        getItemAmount(menus, "main-menu", "chat"),
+                                                        getItemData(menus, "main-menu", "chat")
                                                 )
-                                                .setName(this.getItemName(player, "chat"))
-                                                .setLore(this.getItemLore(player, "chat"))
+                                                .setName(getItemName(menus, player, "main-menu", "chat"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "chat"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -197,28 +192,28 @@ public class MainMenu extends MenuCreator {
                                             user.setChat(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("chat"),
+                                                    getItemSlot(menus, "main-menu", "chat"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("chat"),
-                                                                    this.getItemAmount("chat"),
-                                                                    this.getItemData("chat")
+                                                                    getItemMaterial(menus, "main-menu", "chat"),
+                                                                    getItemAmount(menus, "main-menu", "chat"),
+                                                                    getItemData(menus, "main-menu", "chat")
                                                             )
-                                                            .setName(this.getItemName(player, "chat"))
-                                                            .setLore(this.getItemLore(player, "chat"))
+                                                            .setName(getItemName(menus, player, "main-menu", "chat"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "chat"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("chat") + 9,
+                                                    getItemSlot(menus, "main-menu", "chat") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("chat.toggle.state-off"),
-                                                                    this.getItemAmount("chat.toggle.state-off"),
-                                                                    this.getItemData("chat.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "chat.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "chat.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "chat.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "chat.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "chat.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -229,28 +224,28 @@ public class MainMenu extends MenuCreator {
                                             user.setChat(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("chat"),
+                                                    getItemSlot(menus, "main-menu", "chat"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("chat"),
-                                                                    this.getItemAmount("chat"),
-                                                                    this.getItemData("chat")
+                                                                    getItemMaterial(menus, "main-menu", "chat"),
+                                                                    getItemAmount(menus, "main-menu", "chat"),
+                                                                    getItemData(menus, "main-menu", "chat")
                                                             )
-                                                            .setName(this.getItemName(player, "chat"))
-                                                            .setLore(this.getItemLore(player, "chat"))
+                                                            .setName(getItemName(menus, player, "main-menu", "chat"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "chat"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("chat") + 9,
+                                                    getItemSlot(menus, "main-menu", "chat") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("chat.toggle.state-on"),
-                                                                    this.getItemAmount("chat.toggle.state-on"),
-                                                                    this.getItemData("chat.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "chat.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "chat.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "chat.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "chat.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "chat.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -271,16 +266,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("double-jump"))
+                                .builder(getItemSlot(menus, "main-menu", "double-jump"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("double-jump"),
-                                                        this.getItemAmount("double-jump"),
-                                                        this.getItemData("double-jump")
+                                                        getItemMaterial(menus, "main-menu", "double-jump"),
+                                                        getItemAmount(menus, "main-menu", "double-jump"),
+                                                        getItemData(menus, "main-menu", "double-jump")
                                                 )
-                                                .setName(this.getItemName(player, "double-jump"))
-                                                .setLore(this.getItemLore(player, "double-jump"))
+                                                .setName(getItemName(menus, player, "main-menu", "double-jump"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "double-jump"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -289,28 +284,28 @@ public class MainMenu extends MenuCreator {
                                             user.setDoubleJump(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("double-jump"),
+                                                    getItemSlot(menus, "main-menu", "double-jump"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("double-jump"),
-                                                                    this.getItemAmount("double-jump"),
-                                                                    this.getItemData("double-jump")
+                                                                    getItemMaterial(menus, "main-menu", "double-jump"),
+                                                                    getItemAmount(menus, "main-menu", "double-jump"),
+                                                                    getItemData(menus, "main-menu", "double-jump")
                                                             )
-                                                            .setName(this.getItemName(player, "double-jump"))
-                                                            .setLore(this.getItemLore(player, "double-jump"))
+                                                            .setName(getItemName(menus, player, "main-menu", "double-jump"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "double-jump"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("double-jump") + 9,
+                                                    getItemSlot(menus, "main-menu", "double-jump") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("double-jump.toggle.state-off"),
-                                                                    this.getItemAmount("double-jump.toggle.state-off"),
-                                                                    this.getItemData("double-jump.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "double-jump.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "double-jump.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "double-jump.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "double-jump.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "double-jump.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -327,28 +322,28 @@ public class MainMenu extends MenuCreator {
                                             user.setDoubleJump(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("double-jump"),
+                                                    getItemSlot(menus, "main-menu", "double-jump"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("double-jump"),
-                                                                    this.getItemAmount("double-jump"),
-                                                                    this.getItemData("double-jump")
+                                                                    getItemMaterial(menus, "main-menu", "double-jump"),
+                                                                    getItemAmount(menus, "main-menu", "double-jump"),
+                                                                    getItemData(menus, "main-menu", "double-jump")
                                                             )
-                                                            .setName(this.getItemName(player, "double-jump"))
-                                                            .setLore(this.getItemLore(player, "double-jump"))
+                                                            .setName(getItemName(menus, player, "main-menu", "double-jump"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "double-jump"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("double-jump") + 9,
+                                                    getItemSlot(menus, "main-menu", "double-jump") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("double-jump.toggle.state-on"),
-                                                                    this.getItemAmount("double-jump.toggle.state-on"),
-                                                                    this.getItemData("double-jump.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "double-jump.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "double-jump.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "double-jump.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "double-jump.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "double-jump.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -369,16 +364,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("mount"))
+                                .builder(getItemSlot(menus, "main-menu", "mount"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("mount"),
-                                                        this.getItemAmount("mount"),
-                                                        this.getItemData("mount")
+                                                        getItemMaterial(menus, "main-menu", "mount"),
+                                                        getItemAmount(menus, "main-menu", "mount"),
+                                                        getItemData(menus, "main-menu", "mount")
                                                 )
-                                                .setName(this.getItemName(player, "mount"))
-                                                .setLore(this.getItemLore(player, "mount"))
+                                                .setName(getItemName(menus, player, "main-menu", "mount"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "mount"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -387,28 +382,28 @@ public class MainMenu extends MenuCreator {
                                             user.setMount(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("mount"),
+                                                    getItemSlot(menus, "main-menu", "mount"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("mount"),
-                                                                    this.getItemAmount("mount"),
-                                                                    this.getItemData("mount")
+                                                                    getItemMaterial(menus, "main-menu", "mount"),
+                                                                    getItemAmount(menus, "main-menu", "mount"),
+                                                                    getItemData(menus, "main-menu", "mount")
                                                             )
-                                                            .setName(this.getItemName(player, "mount"))
-                                                            .setLore(this.getItemLore(player, "mount"))
+                                                            .setName(getItemName(menus, player, "main-menu", "mount"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "mount"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("mount") + 9,
+                                                    getItemSlot(menus, "main-menu", "mount") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("mount.toggle.state-off"),
-                                                                    this.getItemAmount("mount.toggle.state-off"),
-                                                                    this.getItemData("mount.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "mount.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "mount.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "mount.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "mount.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "mount.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -419,28 +414,28 @@ public class MainMenu extends MenuCreator {
                                             user.setMount(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("mount"),
+                                                    getItemSlot(menus, "main-menu", "mount"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("mount"),
-                                                                    this.getItemAmount("mount"),
-                                                                    this.getItemData("mount")
+                                                                    getItemMaterial(menus, "main-menu", "mount"),
+                                                                    getItemAmount(menus, "main-menu", "mount"),
+                                                                    getItemData(menus, "main-menu", "mount")
                                                             )
-                                                            .setName(this.getItemName(player, "mount"))
-                                                            .setLore(this.getItemLore(player, "mount"))
+                                                            .setName(getItemName(menus, player, "main-menu", "mount"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "mount"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("mount") + 9,
+                                                    getItemSlot(menus, "main-menu", "mount") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("mount.toggle.state-on"),
-                                                                    this.getItemAmount("mount.toggle.state-on"),
-                                                                    this.getItemData("mount.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "mount.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "mount.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "mount.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "mount.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "mount.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -461,16 +456,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("fly"))
+                                .builder(getItemSlot(menus, "main-menu", "fly"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("fly"),
-                                                        this.getItemAmount("fly"),
-                                                        this.getItemData("fly")
+                                                        getItemMaterial(menus, "main-menu", "fly"),
+                                                        getItemAmount(menus, "main-menu", "fly"),
+                                                        getItemData(menus, "main-menu", "fly")
                                                 )
-                                                .setName(this.getItemName(player, "fly"))
-                                                .setLore(this.getItemLore(player, "fly"))
+                                                .setName(getItemName(menus, player, "main-menu", "fly"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "fly"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -479,28 +474,28 @@ public class MainMenu extends MenuCreator {
                                             user.setFly(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("fly"),
+                                                    getItemSlot(menus, "main-menu", "fly"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("fly"),
-                                                                    this.getItemAmount("fly"),
-                                                                    this.getItemData("fly")
+                                                                    getItemMaterial(menus, "main-menu", "fly"),
+                                                                    getItemAmount(menus, "main-menu", "fly"),
+                                                                    getItemData(menus, "main-menu", "fly")
                                                             )
-                                                            .setName(this.getItemName(player, "fly"))
-                                                            .setLore(this.getItemLore(player, "fly"))
+                                                            .setName(getItemName(menus, player, "main-menu", "fly"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "fly"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("fly") + 9,
+                                                    getItemSlot(menus, "main-menu", "fly") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("fly.toggle.state-off"),
-                                                                    this.getItemAmount("fly.toggle.state-off"),
-                                                                    this.getItemData("fly.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "fly.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "fly.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "fly.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "fly.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "fly.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -520,28 +515,28 @@ public class MainMenu extends MenuCreator {
                                             user.setFly(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("fly"),
+                                                    getItemSlot(menus, "main-menu", "fly"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("fly"),
-                                                                    this.getItemAmount("fly"),
-                                                                    this.getItemData("fly")
+                                                                    getItemMaterial(menus, "main-menu", "fly"),
+                                                                    getItemAmount(menus, "main-menu", "fly"),
+                                                                    getItemData(menus, "main-menu", "fly")
                                                             )
-                                                            .setName(this.getItemName(player, "fly"))
-                                                            .setLore(this.getItemLore(player, "fly"))
+                                                            .setName(getItemName(menus, player, "main-menu", "fly"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "fly"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("fly") + 9,
+                                                    getItemSlot(menus, "main-menu", "fly") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("fly.toggle.state-on"),
-                                                                    this.getItemAmount("fly.toggle.state-on"),
-                                                                    this.getItemData("fly.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "fly.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "fly.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "fly.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "fly.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "fly.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -569,16 +564,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("message-join"))
+                                .builder(getItemSlot(menus, "main-menu", "message-join"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("message-join"),
-                                                        this.getItemAmount("message-join"),
-                                                        this.getItemData("message-join")
+                                                        getItemMaterial(menus, "main-menu", "message-join"),
+                                                        getItemAmount(menus, "main-menu", "message-join"),
+                                                        getItemData(menus, "main-menu", "message-join")
                                                 )
-                                                .setName(this.getItemName(player, "message-join"))
-                                                .setLore(this.getItemLore(player, "message-join"))
+                                                .setName(getItemName(menus, player, "main-menu", "message-join"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "message-join"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -587,28 +582,28 @@ public class MainMenu extends MenuCreator {
                                             user.setMessageJoin(Enums.TypeStatus.OFF);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join"),
+                                                    getItemSlot(menus, "main-menu", "message-join"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("message-join"),
-                                                                    this.getItemAmount("message-join"),
-                                                                    this.getItemData("message-join")
+                                                                    getItemMaterial(menus, "main-menu", "message-join"),
+                                                                    getItemAmount(menus, "main-menu", "message-join"),
+                                                                    getItemData(menus, "main-menu", "message-join")
                                                             )
-                                                            .setName(this.getItemName(player, "message-join"))
-                                                            .setLore(this.getItemLore(player, "message-join"))
+                                                            .setName(getItemName(menus, player, "main-menu", "message-join"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "message-join"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join") + 9,
+                                                    getItemSlot(menus, "main-menu", "message-join") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("message-join.toggle.state-off"),
-                                                                    this.getItemAmount("message-join.toggle.state-off"),
-                                                                    this.getItemData("message-join.toggle.state-off")
+                                                                    getItemMaterial(menus, "main-menu", "message-join.toggle.state-off"),
+                                                                    getItemAmount(menus, "main-menu", "message-join.toggle.state-off"),
+                                                                    getItemData(menus, "main-menu", "message-join.toggle.state-off")
                                                             )
-                                                            .setName(this.getItemName(player, "message-join.toggle.state-off"))
-                                                            .setLore(this.getItemLore(player, "message-join.toggle.state-off"))
+                                                            .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-off"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-off"))
                                                             .build()
                                             );
 
@@ -619,28 +614,28 @@ public class MainMenu extends MenuCreator {
                                             user.setMessageJoin(Enums.TypeStatus.ON);
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join"),
+                                                    getItemSlot(menus, "main-menu", "message-join"),
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("message-join"),
-                                                                    this.getItemAmount("message-join"),
-                                                                    this.getItemData("message-join")
+                                                                    getItemMaterial(menus, "main-menu", "message-join"),
+                                                                    getItemAmount(menus, "main-menu", "message-join"),
+                                                                    getItemData(menus, "main-menu", "message-join")
                                                             )
-                                                            .setName(this.getItemName(player, "message-join"))
-                                                            .setLore(this.getItemLore(player, "message-join"))
+                                                            .setName(getItemName(menus, player, "main-menu", "message-join"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "message-join"))
                                                             .build()
                                             );
 
                                             event.getClickedInventory().setItem(
-                                                    this.getItemSlot("message-join") + 9,
+                                                    getItemSlot(menus, "main-menu", "message-join") + 9,
                                                     ItemBuilder
                                                             .newBuilder(
-                                                                    this.getItemMaterial("message-join.toggle.state-on"),
-                                                                    this.getItemAmount("message-join.toggle.state-on"),
-                                                                    this.getItemData("message-join.toggle.state-on")
+                                                                    getItemMaterial(menus, "main-menu", "message-join.toggle.state-on"),
+                                                                    getItemAmount(menus, "main-menu", "message-join.toggle.state-on"),
+                                                                    getItemData(menus, "main-menu", "message-join.toggle.state-on")
                                                             )
-                                                            .setName(this.getItemName(player, "message-join.toggle.state-on"))
-                                                            .setLore(this.getItemLore(player, "message-join.toggle.state-on"))
+                                                            .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-on"))
+                                                            .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-on"))
                                                             .build()
                                             );
 
@@ -661,16 +656,16 @@ public class MainMenu extends MenuCreator {
                                 .build()
                 ).addItem(
                         ItemClickable
-                                .builder(this.getItemSlot("effect-join"))
+                                .builder(getItemSlot(menus, "main-menu", "effect-join"))
                                 .setItemStack(
                                         ItemBuilder
                                                 .newBuilder(
-                                                        this.getItemMaterial("effect-join"),
-                                                        this.getItemAmount("effect-join"),
-                                                        this.getItemData("effect-join")
+                                                        getItemMaterial(menus, "main-menu", "effect-join"),
+                                                        getItemAmount(menus, "main-menu", "effect-join"),
+                                                        getItemData(menus, "main-menu", "effect-join")
                                                 )
-                                                .setName(this.getItemName(player, "effect-join"))
-                                                .setLore(this.getItemLore(player, "effect-join"))
+                                                .setName(getItemName(menus, player, "main-menu", "effect-join"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "effect-join"))
                                                 .build()
                                 )
                                 .setAction(event -> {
@@ -678,320 +673,446 @@ public class MainMenu extends MenuCreator {
                                         player.closeInventory();
                                         player.sendMessage(colorize(player, language.getString("effect-join.no-permission-open")));
 
+                                        XSound.play(player, "ENTITY_VILLAGER_NO");
+
                                         return false;
                                     }
 
                                     player.closeInventory();
 
-                                    effectMenu.create(player);
+                                    player.openInventory(effectMenu.create(player));
 
                                     XSound.play(player, "UI_BUTTON_CLICK");
 
                                     return true;
                                 })
                                 .build()
+                ).addItem(
+                        ItemClickable
+                                .builder(getItemSlot(menus, "main-menu", "close"))
+                                .setItemStack(
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "close"),
+                                                        getItemAmount(menus, "main-menu", "close"),
+                                                        getItemData(menus, "main-menu", "close")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "close"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "close"))
+                                                .build()
+                                )
+                                .setAction(event -> {
+                                    XSound.play(player, "BLOCK_CHEST_CLOSE");
+
+                                    player.closeInventory();
+
+                                    return true;
+                                })
+                                .build()
                 ).openAction(event -> {
-                    switch (user.getVisibility()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("visibility") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("visibility.toggle.state-on"),
-                                                    this.getItemAmount("visibility.toggle.state-on"),
-                                                    this.getItemData("visibility.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "visibility.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "visibility.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.visibility")) {
+                        switch (user.getVisibility()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "visibility") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "visibility.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "visibility.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "visibility.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case ONLY_RANK:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("visibility") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("visibility.toggle.state-only-rank"),
-                                                    this.getItemAmount("visibility.toggle.state-only-rank"),
-                                                    this.getItemData("visibility.toggle.state-only-rank")
-                                            )
-                                            .setName(this.getItemName(player, "visibility.toggle.state-only-rank"))
-                                            .setLore(this.getItemLore(player, "visibility.toggle.state-only-rank"))
-                                            .build()
-                            );
+                                break;
+                            case ONLY_RANK:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "visibility") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "visibility.toggle.state-only-rank"),
+                                                        getItemAmount(menus, "main-menu", "visibility.toggle.state-only-rank"),
+                                                        getItemData(menus, "main-menu", "visibility.toggle.state-only-rank")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-only-rank"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-only-rank"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("visibility") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("visibility.toggle.state-off"),
-                                                    this.getItemAmount("visibility.toggle.state-off"),
-                                                    this.getItemData("visibility.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "visibility.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "visibility.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "visibility") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "visibility.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "visibility.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "visibility.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("visibility") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("visibility.toggle.state-no-permission"),
-                                                    this.getItemAmount("visibility.toggle.state-no-permission"),
-                                                    this.getItemData("visibility.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "visibility.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "visibility.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "visibility") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "visibility.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "visibility.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "visibility.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setVisibility(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "visibility") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "visibility.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "visibility.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "visibility.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "visibility.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "visibility.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
-                    switch (user.getChat()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("chat") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("chat.toggle.state-on"),
-                                                    this.getItemAmount("chat.toggle.state-on"),
-                                                    this.getItemData("chat.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "chat.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "chat.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.chat")) {
+                        switch (user.getChat()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "chat") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "chat.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "chat.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "chat.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("chat") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("chat.toggle.state-off"),
-                                                    this.getItemAmount("chat.toggle.state-off"),
-                                                    this.getItemData("chat.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "chat.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "chat.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "chat") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "chat.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "chat.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "chat.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("chat") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("chat.toggle.state-no-permission"),
-                                                    this.getItemAmount("chat.toggle.state-no-permission"),
-                                                    this.getItemData("chat.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "chat.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "chat.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "chat") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "chat.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "chat.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "chat.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setChat(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "chat") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "chat.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "chat.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "chat.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "chat.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "chat.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
-                    switch (user.getDoubleJump()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("double-jump") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("double-jump.toggle.state-on"),
-                                                    this.getItemAmount("double-jump.toggle.state-on"),
-                                                    this.getItemData("double-jump.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "double-jump.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "double-jump.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.doubleJump")) {
+                        switch (user.getDoubleJump()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "double-jump") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "double-jump.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "double-jump.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "double-jump.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("double-jump") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("double-jump.toggle.state-off"),
-                                                    this.getItemAmount("double-jump.toggle.state-off"),
-                                                    this.getItemData("double-jump.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "double-jump.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "double-jump.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "double-jump") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "double-jump.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "double-jump.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "double-jump.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("double-jump") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("double-jump.toggle.state-no-permission"),
-                                                    this.getItemAmount("double-jump.toggle.state-no-permission"),
-                                                    this.getItemData("double-jump.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "double-jump.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "double-jump.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "double-jump") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "double-jump.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "double-jump.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "double-jump.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setDoubleJump(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "double-jump") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "double-jump.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "double-jump.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "double-jump.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "double-jump.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "double-jump.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
-                    switch (user.getMount()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("mount") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("mount.toggle.state-on"),
-                                                    this.getItemAmount("mount.toggle.state-on"),
-                                                    this.getItemData("mount.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "mount.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "mount.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.mount")) {
+                        switch (user.getMount()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "mount") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "mount.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "mount.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "mount.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("mount") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("mount.toggle.state-off"),
-                                                    this.getItemAmount("mount.toggle.state-off"),
-                                                    this.getItemData("mount.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "mount.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "mount.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "mount") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "mount.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "mount.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "mount.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("mount") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("mount.toggle.state-no-permission"),
-                                                    this.getItemAmount("mount.toggle.state-no-permission"),
-                                                    this.getItemData("mount.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "mount.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "mount.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "mount") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "mount.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "mount.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "mount.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setMount(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "mount") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "mount.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "mount.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "mount.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "mount.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "mount.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
-                    switch (user.getFly()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("fly") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("fly.toggle.state-on"),
-                                                    this.getItemAmount("fly.toggle.state-on"),
-                                                    this.getItemData("fly.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "fly.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "fly.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.fly")) {
+                        switch (user.getFly()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "fly") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "fly.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "fly.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "fly.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("fly") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("fly.toggle.state-off"),
-                                                    this.getItemAmount("fly.toggle.state-off"),
-                                                    this.getItemData("fly.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "fly.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "fly.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "fly") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "fly.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "fly.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "fly.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("fly") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("fly.toggle.state-no-permission"),
-                                                    this.getItemAmount("fly.toggle.state-no-permission"),
-                                                    this.getItemData("fly.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "fly.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "fly.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "fly") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "fly.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "fly.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "fly.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setFly(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "fly") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "fly.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "fly.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "fly.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "fly.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "fly.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
-                    switch (user.getMessageJoin()) {
-                        case ON:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("message-join") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("message-join.toggle.state-on"),
-                                                    this.getItemAmount("message-join.toggle.state-on"),
-                                                    this.getItemData("message-join.toggle.state-on")
-                                            )
-                                            .setName(this.getItemName(player, "message-join.toggle.state-on"))
-                                            .setLore(this.getItemLore(player, "message-join.toggle.state-on"))
-                                            .build()
-                            );
+                    if (player.hasPermission("elegantoptions.option.messageJoin")) {
+                        switch (user.getMessageJoin()) {
+                            case ON:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "message-join") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "message-join.toggle.state-on"),
+                                                        getItemAmount(menus, "main-menu", "message-join.toggle.state-on"),
+                                                        getItemData(menus, "main-menu", "message-join.toggle.state-on")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-on"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-on"))
+                                                .build()
+                                );
 
-                            break;
-                        case OFF:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("message-join") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("message-join.toggle.state-off"),
-                                                    this.getItemAmount("message-join.toggle.state-off"),
-                                                    this.getItemData("message-join.toggle.state-off")
-                                            )
-                                            .setName(this.getItemName(player, "message-join.toggle.state-off"))
-                                            .setLore(this.getItemLore(player, "message-join.toggle.state-off"))
-                                            .build()
-                            );
+                                break;
+                            case OFF:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "message-join") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "message-join.toggle.state-off"),
+                                                        getItemAmount(menus, "main-menu", "message-join.toggle.state-off"),
+                                                        getItemData(menus, "main-menu", "message-join.toggle.state-off")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-off"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-off"))
+                                                .build()
+                                );
 
-                            break;
-                        case NO_PERMISSION:
-                            event.getInventory().setItem(
-                                    this.getItemSlot("message-join") + 9,
-                                    ItemBuilder
-                                            .newBuilder(
-                                                    this.getItemMaterial("message-join.toggle.state-no-permission"),
-                                                    this.getItemAmount("message-join.toggle.state-no-permission"),
-                                                    this.getItemData("message-join.toggle.state-no-permission")
-                                            )
-                                            .setName(this.getItemName(player, "message-join.toggle.state-no-permission"))
-                                            .setLore(this.getItemLore(player, "message-join.toggle.state-no-permission"))
-                                            .build()
-                            );
+                                break;
+                            case NO_PERMISSION:
+                                event.getInventory().setItem(
+                                        getItemSlot(menus, "main-menu", "message-join") + 9,
+                                        ItemBuilder
+                                                .newBuilder(
+                                                        getItemMaterial(menus, "main-menu", "message-join.toggle.state-no-permission"),
+                                                        getItemAmount(menus, "main-menu", "message-join.toggle.state-no-permission"),
+                                                        getItemData(menus, "main-menu", "message-join.toggle.state-no-permission")
+                                                )
+                                                .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-no-permission"))
+                                                .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-no-permission"))
+                                                .build()
+                                );
 
-                            break;
+                                break;
+                        }
+                    } else {
+                        user.setMessageJoin(Enums.TypeStatus.NO_PERMISSION);
+
+                        event.getInventory().setItem(
+                                getItemSlot(menus, "main-menu", "message-join") + 9,
+                                ItemBuilder
+                                        .newBuilder(
+                                                getItemMaterial(menus, "main-menu", "message-join.toggle.state-no-permission"),
+                                                getItemAmount(menus, "main-menu", "message-join.toggle.state-no-permission"),
+                                                getItemData(menus, "main-menu", "message-join.toggle.state-no-permission")
+                                        )
+                                        .setName(getItemName(menus, player, "main-menu", "message-join.toggle.state-no-permission"))
+                                        .setLore(getItemLore(menus, player, "main-menu", "message-join.toggle.state-no-permission"))
+                                        .build()
+                        );
                     }
 
                     switch (user.getEffectJoin()) {
@@ -1000,15 +1121,15 @@ public class MainMenu extends MenuCreator {
                         case ZEUS:
                         case SHEEP:
                             event.getInventory().setItem(
-                                    this.getItemSlot("effect-join") + 9,
+                                    getItemSlot(menus, "main-menu", "effect-join") + 9,
                                     ItemBuilder
                                             .newBuilder(
-                                                    this.getItemMaterial("effect-join.toggle.state"),
-                                                    this.getItemAmount("effect-join.toggle.state"),
-                                                    this.getItemData("effect-join.toggle.state")
+                                                    getItemMaterial(menus, "main-menu", "effect-join.toggle.state"),
+                                                    getItemAmount(menus, "main-menu", "effect-join.toggle.state"),
+                                                    getItemData(menus, "main-menu", "effect-join.toggle.state")
                                             )
-                                            .setName(this.getItemName(player, "effect-join.toggle.state"))
-                                            .setLore(this.getItemLore(player, "effect-join.toggle.state"))
+                                            .setName(getItemName(menus, player, "main-menu", "effect-join.toggle.state"))
+                                            .setLore(getItemLore(menus, player, "main-menu", "effect-join.toggle.state"))
                                             .build()
                             );
 
