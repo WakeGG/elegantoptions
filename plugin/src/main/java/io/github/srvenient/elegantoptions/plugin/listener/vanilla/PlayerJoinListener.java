@@ -40,29 +40,5 @@ public class PlayerJoinListener implements Listener {
         this.loadPlayer(event.getPlayer());
     }
 
-    public void loadPlayer(Player player) {
-        UUID uuid = player.getUniqueId();
-
-        String playerId = uuid.toString();
-        String playerName = player.getName();
-
-        cache.load(playerId)
-                .addCallback(user -> {
-                    if (user == null) {
-                        User rawUser = new User(playerId, playerName);
-
-                        database.loadUser(rawUser);
-
-                        cache.update(rawUser);
-
-                        return;
-                    }
-
-                    user.setPlayerName(playerName);
-
-                    database.loadUser(user);
-
-                    cache.update(user);
-                });
-    }
+    public void loadPlayer(Player player) {}
 }
