@@ -11,7 +11,5 @@ import me.yushust.inject.key.TypeReference;
 public class StorageModule extends AbstractModule {
 
     @Override
-    protected void configure() {
-        this.bind(new TypeReference<ObjectCache<User>>() {}).toInstance(new LocalObjectCache<>());
-    }
+    protected void configure() {}
 }
